@@ -1,0 +1,1064 @@
+fileFormatVersion: 2
+guid: d4fe6659fbca44d0bb7f2cb7af98be2a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3640396998834446254
+    second: fieldUnit_0
+  - first:
+      213: 3566481873997208579
+    second: fieldUnit_1
+  - first:
+      213: -7568110632971731115
+    second: fieldUnit_2
+  - first:
+      213: 4738820793274561502
+    second: fieldUnit_3
+  - first:
+      213: -6489725389765250487
+    second: fieldUnit_4
+  - first:
+      213: 7932540292278264951
+    second: fieldUnit_5
+  - first:
+      213: -2083090954993728154
+    second: fieldUnit_6
+  - first:
+      213: -11309978989760836
+    second: fieldUnit_7
+  - first:
+      213: -689065558887939407
+    second: fieldUnit_8
+  - first:
+      213: -3224042378784357735
+    second: fieldUnit_9
+  - first:
+      213: -1616757863876737036
+    second: fieldUnit_10
+  - first:
+      213: 3970866567945293021
+    second: fieldUnit_11
+  - first:
+      213: -1810341362823398051
+    second: fieldUnit_12
+  - first:
+      213: 1399787196224242922
+    second: fieldUnit_13
+  - first:
+      213: -685837575406042450
+    second: fieldUnit_14
+  - first:
+      213: 3300438948058508793
+    second: fieldUnit_15
+  - first:
+      213: 7301283212356268275
+    second: fieldUnit_16
+  - first:
+      213: 8969410300427681322
+    second: fieldUnit_17
+  - first:
+      213: -6518082748905528519
+    second: fieldUnit_18
+  - first:
+      213: -3035581945061150615
+    second: fieldUnit_19
+  - first:
+      213: 458987504691419515
+    second: fieldUnit_20
+  - first:
+      213: 2526056234248642876
+    second: fieldUnit_21
+  - first:
+      213: -3433049911642447577
+    second: fieldUnit_22
+  - first:
+      213: -9190633082033431363
+    second: fieldUnit_23
+  - first:
+      213: 5244317314112982505
+    second: fieldUnit_24
+  - first:
+      213: -1481247600781694385
+    second: fieldUnit_25
+  - first:
+      213: 8095832163047509153
+    second: fieldUnit_26
+  - first:
+      213: -8322906287583218611
+    second: fieldUnit_27
+  - first:
+      213: 6004931035922353590
+    second: fieldUnit_28
+  - first:
+      213: -3482227194294613242
+    second: fieldUnit_29
+  - first:
+      213: 7561505958973599775
+    second: fieldUnit_30
+  - first:
+      213: -8172181172430022400
+    second: fieldUnit_31
+  - first:
+      213: -65160834580393248
+    second: AvatarSample_0
+  - first:
+      213: -1883601187970851889
+    second: AvatarSample_1
+  - first:
+      213: -2587580347957162368
+    second: AvatarSample_2
+  - first:
+      213: -649466604894769025
+    second: AvatarSample_3
+  - first:
+      213: -6206283721465401352
+    second: AvatarSample_4
+  - first:
+      213: 5579415129571193299
+    second: AvatarSample_5
+  - first:
+      213: 1177755418002343690
+    second: AvatarSample_6
+  - first:
+      213: 6687882203573980872
+    second: AvatarSample_7
+  - first:
+      213: 2362573186711180440
+    second: AvatarSample_8
+  - first:
+      213: -8497555414553747281
+    second: AvatarSample_9
+  - first:
+      213: 4921600871999762340
+    second: AvatarSample_10
+  - first:
+      213: 5081974126550962779
+    second: AvatarSample_11
+  - first:
+      213: 6106127800471576563
+    second: AvatarSample_12
+  - first:
+      213: 5415160764423013172
+    second: AvatarSample_13
+  - first:
+      213: 4283184251958776604
+    second: AvatarSample_14
+  - first:
+      213: 1026783921745188289
+    second: AvatarSample_15
+  - first:
+      213: 3708278952044007796
+    second: AvatarSample_16
+  - first:
+      213: -3495021192426949032
+    second: AvatarSample_17
+  - first:
+      213: -1312880849935171196
+    second: AvatarSample_18
+  - first:
+      213: 2352672099310548009
+    second: AvatarSample_19
+  - first:
+      213: -3911718305948963097
+    second: AvatarSample_20
+  - first:
+      213: -8349203611725940409
+    second: AvatarSample_21
+  - first:
+      213: 3125032052667434182
+    second: AvatarSample_22
+  - first:
+      213: 6607003263119302648
+    second: AvatarSample_23
+  - first:
+      213: 300020421783201008
+    second: AvatarSample_24
+  - first:
+      213: 1295085641806226021
+    second: AvatarSample_25
+  - first:
+      213: 1423079922372854136
+    second: AvatarSample_26
+  - first:
+      213: 3921308993353571819
+    second: AvatarSample_27
+  - first:
+      213: -8438839740344064178
+    second: AvatarSample_28
+  - first:
+      213: 4092523311262781522
+    second: AvatarSample_29
+  - first:
+      213: -6921299471906694742
+    second: AvatarSample_30
+  - first:
+      213: 6195489526370092202
+    second: AvatarSample_31
+  - first:
+      213: 2199911567580309581
+    second: AvatarSample_0
+  - first:
+      213: -7804593266011781231
+    second: AvatarSample_1
+  - first:
+      213: 9004442973855525665
+    second: AvatarSample_2
+  - first:
+      213: 6937025421168154906
+    second: AvatarSample_3
+  - first:
+      213: 8589994319062344246
+    second: AvatarSample_4
+  - first:
+      213: -505642863260091288
+    second: AvatarSample_5
+  - first:
+      213: -8869567860509149472
+    second: AvatarSample_6
+  - first:
+      213: -4586230972961878513
+    second: AvatarSample_7
+  - first:
+      213: -682841195185263945
+    second: AvatarSample_8
+  - first:
+      213: 4508851596578782074
+    second: AvatarSample_9
+  - first:
+      213: -6838550953060575639
+    second: AvatarSample_10
+  - first:
+      213: 4341821186567497537
+    second: AvatarSample_11
+  - first:
+      213: -8097191024765003632
+    second: AvatarSample_12
+  - first:
+      213: -3934055150563926125
+    second: AvatarSample_13
+  - first:
+      213: -4113566821772672253
+    second: AvatarSample_14
+  - first:
+      213: 6767245031617029410
+    second: AvatarSample_15
+  - first:
+      213: 445123752475078036
+    second: AvatarSample_16
+  - first:
+      213: 6554194638404035478
+    second: AvatarSample_17
+  - first:
+      213: -4377786680705102050
+    second: AvatarSample_18
+  - first:
+      213: -5742691928465236886
+    second: AvatarSample_19
+  - first:
+      213: 6883136705921491172
+    second: AvatarSample_20
+  - first:
+      213: 1251626138418442372
+    second: AvatarSample_21
+  - first:
+      213: -6923537633791670726
+    second: AvatarSample_22
+  - first:
+      213: 1907414463493109649
+    second: AvatarSample_23
+  - first:
+      213: 9143862170899487596
+    second: AvatarSample_24
+  - first:
+      213: 2763056501114628453
+    second: AvatarSample_25
+  - first:
+      213: -2756979315832438181
+    second: AvatarSample_26
+  - first:
+      213: -6845635797012729489
+    second: AvatarSample_27
+  - first:
+      213: -1463347441146098197
+    second: AvatarSample_28
+  - first:
+      213: -3873090464994950039
+    second: AvatarSample_29
+  - first:
+      213: -8685397877046617998
+    second: AvatarSample_30
+  - first:
+      213: 9060420767434600249
+    second: AvatarSample_31
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 64
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: AvatarSample_0
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 713
+        width: 42
+        height: 139
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d48a5e24ae7a78e10800000000000000
+      internalID: 2199911567580309581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_1
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 713
+        width: 42
+        height: 112
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 19746fa66c380b390800000000000000
+      internalID: -7804593266011781231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_2
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 713
+        width: 42
+        height: 149
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12babe85d2536fc70800000000000000
+      internalID: 9004442973855525665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_3
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 713
+        width: 42
+        height: 124
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a19159addd3454060800000000000000
+      internalID: 6937025421168154906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_4
+      rect:
+        serializedVersion: 2
+        x: 249
+        y: 713
+        width: 42
+        height: 149
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 632a55a425ac53770800000000000000
+      internalID: 8589994319062344246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_5
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 713
+        width: 42
+        height: 122
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86cbb20be789bf8f0800000000000000
+      internalID: -505642863260091288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_6
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 713
+        width: 44
+        height: 137
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e6712b1607f8e480800000000000000
+      internalID: -8869567860509149472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_7
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 713
+        width: 44
+        height: 110
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0e86be9a3f6a50c0800000000000000
+      internalID: -4586230972961878513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_8
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 605
+        width: 42
+        height: 83
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7baaaf20d8f0686f0800000000000000
+      internalID: -682841195185263945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_9
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 605
+        width: 42
+        height: 58
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7bf70f53a8a29e30800000000000000
+      internalID: 4508851596578782074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_10
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 605
+        width: 42
+        height: 95
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9665a60f3269811a0800000000000000
+      internalID: -6838550953060575639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_11
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 605
+        width: 42
+        height: 71
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 147ee9f7d5f314c30800000000000000
+      internalID: 4341821186567497537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_12
+      rect:
+        serializedVersion: 2
+        x: 249
+        y: 605
+        width: 42
+        height: 93
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 098966ae9aff0af80800000000000000
+      internalID: -8097191024765003632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_13
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 605
+        width: 42
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39f57df1fad6769c0800000000000000
+      internalID: -3934055150563926125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_14
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 605
+        width: 44
+        height: 81
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 303486c25cca9e6c0800000000000000
+      internalID: -4113566821772672253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_15
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 605
+        width: 44
+        height: 56
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2256f8970851aed50800000000000000
+      internalID: 6767245031617029410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_16
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 546
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49dad5bc1b56d2600800000000000000
+      internalID: 445123752475078036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_17
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 546
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 693a7da4c4d25fa50800000000000000
+      internalID: 6554194638404035478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_18
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 546
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1fc22a553afe33c0800000000000000
+      internalID: -4377786680705102050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_19
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 546
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a6c935dfd1cdd40b0800000000000000
+      internalID: -5742691928465236886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_20
+      rect:
+        serializedVersion: 2
+        x: 249
+        y: 544
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e027e89d50d58f50800000000000000
+      internalID: 6883136705921491172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_21
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 544
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 480760c675bae5110800000000000000
+      internalID: 1251626138418442372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_22
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 545
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a368ccc5437aaef90800000000000000
+      internalID: -6923537633791670726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_23
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 545
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 197f2ff395f787a10800000000000000
+      internalID: 1907414463493109649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_24
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 492
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6b989bb23685ee70800000000000000
+      internalID: 9143862170899487596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_25
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 492
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 569654b9f39585620800000000000000
+      internalID: 2763056501114628453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_26
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 492
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5245ba5bed3db9d0800000000000000
+      internalID: -2756979315832438181
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_27
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 492
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f61bb59238a6ff0a0800000000000000
+      internalID: -6845635797012729489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_28
+      rect:
+        serializedVersion: 2
+        x: 249
+        y: 490
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bed8283614521bbe0800000000000000
+      internalID: -1463347441146098197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_29
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 490
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 964060b1eb4004ac0800000000000000
+      internalID: -3873090464994950039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_30
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 491
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 27854b5e5a4477780800000000000000
+      internalID: -8685397877046617998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AvatarSample_31
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 491
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93fe28e0fa41dbd70800000000000000
+      internalID: 9060420767434600249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
