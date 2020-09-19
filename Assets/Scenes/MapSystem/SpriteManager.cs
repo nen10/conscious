@@ -22,34 +22,56 @@ namespace MapSystem.SpriteManager
             this.deco = d;
         }
 
-        public bool hasWall(Hex h)
-        {
-            return rt.GroundWallName(deco) == layerGround.GetTile((Vector3Int)h).name;
-        }
-
         public HexTile HexTile(Hex h)
         {
             return new HexTile(this, h);
         }
 
+        public bool generated(Hex h)
+        {
+            return layerGround.GetTile((Vector3Int)h) != null;
+        }
+
+        public bool hasWall(Hex h)
+        {
+            return rt.GroundWallName(deco) == layerGround.GetTile((Vector3Int)h).name;
+        }
+
         public void SetTileWall(HexTile h)
         {
-            if ( !h.ex_here ){ return; }
+            if ( !hasWall(h) ){ return; }
 
-            Tile groundWall = Resources.Load<Tile>(GetTileNameWall(h));
-            layerGround.SetTile((Vector3Int)h, groundWall);
-        }
-        public string GetTileNameWall(HexTile h)
-        {
-            return rt.DECORATE2WALL(deco, rt.wallAround2WALLTYPE(h));
+            Tile wall = Resources.Load<Tile>(rt.GetTileNameWall(deco, h));
+            layerOnGround.SetTile((Vector3Int)h, wall);
         }
 
-        public void SetTileWalls(HexTile h, int r)
+        public void SetTileGround(HexTile h)
         {
-            if ( !h.ex_here ){ return; }
+            if ( ! h.isGlobal ){ return; }
+            if ( generated(h) ){ return; }
+            layerGround.SetTile((Vector3Int)h, GetTileGround(GetRandomValue(h)));
+        } 
+        public void SetTileGroundInit(HexTile h,int count)
+        {
+            if ( ! h.isGlobal ){ return; }
+            if ( generated(h) ){ return; }
 
-            Tile groundWall = Resources.Load<Tile>(GetTileNameWall(h));
-            layerGround.SetTile((Vector3Int)h, groundWall);
+            layerGround.SetTile((Vector3Int)h, GetTileGround(GetRandomValue(count)));
+        } 
+        public Tile GetTileGround(rt.GROUNDTYPE randomvalue)
+        {
+            return Resources.Load<Tile>(rt.DECORATE2GROUND[deco][randomvalue]);
+        } 
+
+        public rt.GROUNDTYPE GetRandomValue(int count)
+        {
+            rt.GROUNDTYPE randomvalue = 0;
+            return randomvalue;
+        }
+        public rt.GROUNDTYPE GetRandomValue(HexTile h)
+        {
+            rt.GROUNDTYPE randomvalue = 0;
+            return randomvalue;
         }
 
     }
@@ -57,43 +79,15 @@ namespace MapSystem.SpriteManager
     public class HexTile : Hex
     {
         private MapData map;
-        public bool ex_here
-        {
-            get { return map.hasWall(this); }
-        }
-        public bool ex_a
-        {
-            get { return map.hasWall(this + gen.A); }
-        }
-        public bool ex_ab
-        {
-            get { return map.hasWall(this + gen.AB); }
-        }
-        public bool ex_b
-        {
-            get { return map.hasWall(this + gen.B); }
-        }
-        public bool ex_bc
-        {
-            get { return map.hasWall(this + gen.BC); }
-        }
-        public bool ex_c
-        {
-            get { return map.hasWall(this + gen.C); }
-        }
-        public bool ex_ca
-        {
-            get { return map.hasWall(this + gen.CA); }
-        }
-        public HexTile(MapData map, int a, int b, int c, bool isGlobal = false)
-         : base(a, b , c, isGlobal)
+        public HexTile(MapData map, int a, int b, int c)
+         : base(a, b , c, true)
         {
             this.map = map;
         }
         public HexTile(MapData map, Hex h)
          : base(h.a, h.b , h.c, h.isGlobal)
         {
-            this.map = map;
+            this.map = h.isGlobal ? map : null;
         }
 
         public static HexTile operator+ (HexTile h1, Hex h2)
@@ -115,7 +109,12 @@ namespace MapSystem.SpriteManager
             return h * -1;
         }
 
-
+        public bool hasWall(HexUnit h){
+            return this.map.hasWall(this + h);
+        }
+        public bool generated(HexUnit h){
+            return this.map.generated(this + h);
+        }
 
     }
 

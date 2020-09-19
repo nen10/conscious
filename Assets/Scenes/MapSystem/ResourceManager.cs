@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MapSystem.SpriteManager;
+using MapSystem.HexCoordinateSystem;
+using gen = MapSystem.HexCoordinateSystem.HexGenerator;
 
 namespace MapSystem.ResourceManager
 {
@@ -41,42 +43,58 @@ namespace MapSystem.ResourceManager
         {
             {DECORATETYPE.template, "Tilemap/mapchip_wall_template_"}, 
         };
-        public enum WALLTOP
+        public enum around
         {
             iso = 1,
+
+            // top
             ab = 2,
             ca = 3,
             a = 0,
-        }
-        public enum WALLBOTTOM
-        {
+
+            //bottom
             bc = 0,
-            iso = 1,
             b = 2,
-            b_c = 3,
             c = 4,
+            b_and_c = 3,
         }
 
-        public static int wallAround2WALLTYPE(HexTile h)
+        public static readonly Dictionary<gen.unit, around> unit2around
+        = new Dictionary<gen.unit, around>()
         {
-            int top = 1;
-            top *= h.ex_a ? (int)WALLTOP.a : 1;
-            top *= h.ex_ab ? (int)WALLTOP.ab : 1;
-            top *= h.ex_ca ? (int)WALLTOP.ca : 1;
+            {gen.unit.a, around.a}, 
+            {gen.unit.ab, around.ab}, 
+            {gen.unit.b, around.b}, 
+            {gen.unit.bc, around.bc}, 
+            {gen.unit.c, around.c}, 
+            {gen.unit.ca, around.ca},  
+        };
+
+        public static int GetWALLTYPE(HexTile h)
+        {
+            int top = (int)around.iso;
+            top *= walltypeGenerator(h, gen.unit.a);
+            top *= walltypeGenerator(h, gen.unit.ab);
+            top *= walltypeGenerator(h, gen.unit.ca);
             top %= 6;
 
-            int bottom = 1;
-            bottom *= h.ex_bc ? (int)WALLBOTTOM.bc : 1;
-            bottom *= h.ex_b ? (int)WALLBOTTOM.b : 1;
-            bottom *= h.ex_c ? (int)WALLBOTTOM.c : 1;
+            int bottom = (int)around.iso;
+            bottom *= walltypeGenerator(h, gen.unit.bc);
+            bottom *= walltypeGenerator(h, gen.unit.b);
+            bottom *= walltypeGenerator(h, gen.unit.c);
             bottom %= 5;
 
             return top + (bottom * 4);
         }
-        public static string DECORATE2WALL(DECORATETYPE d, int walltype )
+        private static int walltypeGenerator(HexTile h, gen.unit u)
         {
-            return DECORATE2WALLSET[d] + walltype.ToString();
+            return (int)(h.hasWall(gen.unit2Hex[u]) ? unit2around[u] : around.iso);
         }
+        public static string GetTileNameWall(DECORATETYPE d, HexTile h)
+        {
+            return DECORATE2WALLSET[d] + GetWALLTYPE(h).ToString();
+        }
+
 
     }
 }

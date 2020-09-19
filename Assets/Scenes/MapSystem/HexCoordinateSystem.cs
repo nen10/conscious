@@ -17,7 +17,7 @@ namespace MapSystem.HexCoordinateSystem
         public static Vector3Int sqYXZHex2UnityYXZHex(Vector3Int v)
         {
             int x = ((v.x % 2 == 0) ? v.x : v.x - 1) / 2;
-            return new Vector3Int(x, v.y / 2, -x);
+            return new Vector3Int(x, v.y / 2, 0);
         }
         public static Vector3Int Z3Hex2UnityYXZHex(Hex h)
         {
@@ -43,7 +43,7 @@ namespace MapSystem.HexCoordinateSystem
         public static Vector3 sqYXZHex2FlatYXZHex(Vector3Int v)
         {
             float x = (float)v.x / 2;
-            return new Vector3(x, (float)v.y / 2, -x);
+            return new Vector3(x, (float)v.y / 2, 0);
         }
         public static Vector3Int flatYXZHex2sqYXZHex(Vector3 v)
         {
@@ -51,10 +51,6 @@ namespace MapSystem.HexCoordinateSystem
         }
         public static Vector3 Z3Hex2FlatYXZHex(Hex h)
         {
-            if(!h.isGlobal)
-            {
-                return new Vector3Int();
-            }
             return sqYXZHex2FlatYXZHex(Z3Hex2sqYXZHex(h));
         }
     }
@@ -76,6 +72,12 @@ namespace MapSystem.HexCoordinateSystem
             get { return c - b; }
         }
         public bool isGlobal;
+
+        public int norm
+        {
+            get { return L1Norm(); }
+        }
+
         public Vector3 flatYXZHex
         {
             get { return Transform.Z3Hex2FlatYXZHex(this); }
@@ -157,76 +159,131 @@ namespace MapSystem.HexCoordinateSystem
         {
             return h.flatYXZHex;
         }
+        public HexUnit HexUnit(Hex h)
+        {
+            return h.norm == 1 ? new HexUnit(h) : null;
+        }
 
+
+    }
+    public class HexUnit : Hex
+    {
+        public HexGenerator.unit d
+        {
+            get { return Hex2unit(); }
+
+        }
+        public HexUnit(Hex h)
+         : base (h.a, h.b, h.c, false)
+        {
+        }
+        public HexUnit(int a, int b, int c)
+         : base (a, b, c, false)
+        {
+        }
+        public static HexUnit operator- (HexUnit h)
+        {
+            return new HexUnit((Hex)h * -1);
+        }
+        public HexGenerator.unit Hex2unit()
+        {
+            int max = Max(this.a, this.c);
+            int min = Min(this.a, this.c);
+            if (min == 0)
+            {
+                return this.a == 0 ? HexGenerator.unit.c : HexGenerator.unit.a; 
+            }
+            if (max == 0)
+            {
+                return this.a == 0 ? HexGenerator.unit.ab : HexGenerator.unit.bc; 
+            }
+
+            return min > 0 ? HexGenerator.unit.ca : HexGenerator.unit.b; 
+
+        }
 
     }
     public struct HexGenerator
     {
-        public static readonly Hex A = new Hex(1, 0, 0);
-        public static readonly Hex B = new Hex(0, 1, 0);
-        public static readonly Hex C = new Hex(0, 0, 1);
-        public static readonly Hex BC = -A;
-        public static readonly Hex CA = -B;
-        public static readonly Hex AB = -C;
+        public static readonly Hex O = new Hex(0, 0, 0);
+        public static readonly HexUnit A = new HexUnit(1, 0, 0);
+        public static readonly HexUnit B = new HexUnit(0, 1, 0);
+        public static readonly HexUnit C = new HexUnit(0, 0, 1);
+        public static readonly HexUnit BC = -A;
+        public static readonly HexUnit CA = -B;
+        public static readonly HexUnit AB = -C;
 
-        public enum area
+        public enum unit
         {
-            ab = 0,
-            ba = 1,
-            bc = 2,
-            cb = 3,
-            ca = 4,
-            ac = 5,
+            a = 0,
+            ab = 1,
+            b = 2,
+            bc = 3,
+            c = 4,
+            ca = 5,
+
         }
 
-        public static area Hex2area(Hex h)
-        {
-            int mi = Min(h.a, h.c);
-            int ma = Max(h.a, h.c);
-
-            int a = h.a - mi;
-
-            if (mi == 0 && ma == 0){
-                return area.ab;
-            }
-            if (mi >= 0){
-                return a >= 0 ? area.ac : area.ca;
-            }
-            if (ma < 0){
-                return a == 0 ? area.bc : area.ba;
-            }
-            return a == 0 ? area.cb : area.ab;
-        }
-        public static readonly Dictionary<area, (Hex,Hex)> area2PositiveBasis
-        = new Dictionary<area, (Hex, Hex)>()
-        {
-            {area.ab, (A, B)}, 
-            {area.ba, (B, A)}, 
-            {area.bc, (B, C)}, 
-            {area.cb, (C, B)}, 
-            {area.ca, (C, A)}, 
-            {area.ac, (A, C)}, 
+        public static readonly Dictionary<unit, HexUnit> unit2Hex
+        = new Dictionary<unit, HexUnit>()
+        { 
+            {unit.a, A}, 
+            {unit.ab, AB}, 
+            {unit.b, B}, 
+            {unit.bc, BC}, 
+            {unit.c, C}, 
+            {unit.ca, CA}, 
         };
-        public static List<Hex> L1CircumferenceEdgePoints(int r, area d, List<Hex> ret)
+
+        public static HexUnit unit2HexRotate(unit u, int rot)
         {
-
-            Hex initiative = area2PositiveBasis[d].Item1;
-            Hex sub = area2PositiveBasis[d].Item2;
-
+            return unit2Hex[(unit)(((int)u + rot) % 6)];
+        }
+        public static List<Hex> L1CircleOneEdgePointsLeft(int r, unit u, List<Hex> ret)
+        {
             for (int i = 1; i < r; i++)
             {
-                ret.Add((initiative * r) + (sub * i));
+                ret.Add((unit2Hex[u] * r) + (unit2HexRotate(u, 2) * i));
+            }
+            return ret;
+        }
+        public static List<Hex> L1CircleOneEdgePointsRight(int r, unit u, List<Hex> ret)
+        {
+            for (int i = 1; i < r; i++)
+            {
+                ret.Add((unit2Hex[u] * r) + (unit2HexRotate(u, 4) * i));
             }
             return ret;
         }
 
-        public static List<Hex> L1CircumferencePoints(int r, List<Hex> ret)
+        public static List<Hex> L1CircleNodeSideTwoEdgesPoints(int r, unit u, List<Hex> ret)
         {
-            for (int d = 0; d <= 5 * Min(1,r); d++)
-            {
-                ret.Add(area2PositiveBasis[(area)d].Item1 * r);
-                L1CircumferenceEdgePoints(r, (area)d, ret);
+            L1CircleOneEdgePointsLeft(r, u, ret);
+            L1CircleOneEdgePointsRight(r, u, ret);
 
+            for (int i = 1; i < r; i++)
+            {
+                ret.Add((unit2Hex[u] * r) + (unit2HexRotate(u, 2) * i));
+            }
+            return ret;
+        }
+        public static List<Hex> L1CircleAllEdgePoints(int r, List<Hex> ret)
+        {
+            foreach(unit u in unit2Hex.Keys)
+            {
+                ret.Add(unit2Hex[u] * r);
+                L1CircleOneEdgePointsLeft(r, u, ret);
+            }
+            return ret;
+        }
+
+        public static List<Hex> L1OddOrEvenNodes(int r, List<Hex> ret)
+        {
+            foreach(unit u in unit2Hex.Keys)
+            {
+                if((int)u % 2 == r % 2){
+                    ret.Add(unit2Hex[u] * r);
+                }
             }
             return ret;
         }
