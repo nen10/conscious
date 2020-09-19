@@ -13,12 +13,14 @@ namespace MapSystem.SpriteManager
     {
         public Tilemap layerGround;
         public Tilemap layerOnGround;
+        public Tilemap layerBlaind;
 
         public rt.DECORATETYPE deco;
-        public MapData(Tilemap ground, Tilemap onGround, rt.DECORATETYPE d)
+        public MapData(Tilemap ground, Tilemap onGround, Tilemap blaind, rt.DECORATETYPE d)
         {
             this.layerGround = ground;
             this.layerOnGround = onGround;
+            this.layerBlaind = blaind;
             this.deco = d;
         }
 
@@ -31,39 +33,50 @@ namespace MapSystem.SpriteManager
         {
             return layerGround.GetTile((Vector3Int)h) != null;
         }
+        public bool blaind(Hex h)
+        {
+            return layerBlaind.GetTile((Vector3Int)h) != null;
+        }
 
         public bool hasWall(Hex h)
         {
             return rt.GroundWallName(deco) == layerGround.GetTile((Vector3Int)h).name;
         }
+        public bool exists(Hex h)
+        {
+            return layerOnGround.GetTile((Vector3Int)h) != null;
+        }
 
+        public void SetTileBlaind(HexTile h)
+        {
+            if ( blaind(h) ){ return; }
+            Tile b = Resources.Load<Tile>(rt.DECORATE2GROUND[deco][rt.GROUNDTYPE.blaind]);
+            layerBlaind.SetTile((Vector3Int)h, b);
+        } 
         public void SetTileWall(HexTile h)
         {
             if ( !hasWall(h) ){ return; }
-
+            if ( exists(h) ){ return; }
             Tile wall = Resources.Load<Tile>(rt.GetTileNameWall(deco, h));
             layerOnGround.SetTile((Vector3Int)h, wall);
         }
-
-        public void SetTileGround(HexTile h)
+        public void SetTileGround(HexTile h, gen.unit generatePoint)
         {
-            if ( ! h.isGlobal ){ return; }
             if ( generated(h) ){ return; }
+            ////
             layerGround.SetTile((Vector3Int)h, GetTileGround(GetRandomValue(h)));
         } 
-        public void SetTileGroundInit(HexTile h,int count)
+        public void SetTileGroundInit(HexTile h)
         {
-            if ( ! h.isGlobal ){ return; }
             if ( generated(h) ){ return; }
-
-            layerGround.SetTile((Vector3Int)h, GetTileGround(GetRandomValue(count)));
+            layerGround.SetTile((Vector3Int)h, GetTileGround(rt.GROUNDTYPE.wall));
         } 
         public Tile GetTileGround(rt.GROUNDTYPE randomvalue)
         {
             return Resources.Load<Tile>(rt.DECORATE2GROUND[deco][randomvalue]);
         } 
 
-        public rt.GROUNDTYPE GetRandomValue(int count)
+        public rt.GROUNDTYPE GetRandomValue()
         {
             rt.GROUNDTYPE randomvalue = 0;
             return randomvalue;
@@ -74,6 +87,22 @@ namespace MapSystem.SpriteManager
             return randomvalue;
         }
 
+        public void RemoveTileBlaind(HexTile h)
+        {
+            if ( !blaind(h) ){ return; }
+            layerBlaind.SetTile((Vector3Int)h, null);
+        } 
+        public void RemoveTileWall(HexTile h)
+        {
+            if ( !hasWall(h) ){ return; }
+            if ( !exists(h) ){ return; }
+            layerOnGround.SetTile((Vector3Int)h, null);
+        }
+        public void RemoveTileGround(HexTile h)
+        {
+            if ( !generated(h) ){ return; }
+            layerGround.SetTile((Vector3Int)h, null);
+        } 
     }
 
     public class HexTile : Hex
@@ -114,6 +143,36 @@ namespace MapSystem.SpriteManager
         }
         public bool generated(HexUnit h){
             return this.map.generated(this + h);
+        }
+
+        public void SetTileGroundInit(Hex h)
+        {
+            map.SetTileGroundInit(this + h);
+        } 
+
+        public void SetTileGround(Hex h, gen.unit generatePoint)
+        {
+            map.SetTileGround(this + h, generatePoint);
+        } 
+        public void SetTileBlaind(Hex h)
+        {
+            map.SetTileBlaind(this + h);
+        } 
+        public void SetTileWall(Hex h)
+        {
+            map.SetTileWall(this + h);
+        }
+        public void RemoveTileGround(Hex h)
+        {
+            map.RemoveTileGround(this + h);
+        } 
+        public void RemoveTileBlaind(Hex h)
+        {
+            map.RemoveTileBlaind(this + h);
+        } 
+        public void RemoveTileWall(Hex h)
+        {
+            map.RemoveTileWall(this + h);
         }
 
     }

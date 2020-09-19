@@ -109,14 +109,6 @@ namespace MapSystem.HexCoordinateSystem
                 h1.isGlobal ^ h2.isGlobal
                 );
         }
-        public Hex add (Hex h)
-        {
-            this.a += h.a;
-            this.b += h.b;
-            this.c += h.c;
-            this.isGlobal = this.isGlobal ^ h.isGlobal;
-            return this;
-        }
         public static Hex operator- (Hex h1, Hex h2)
         {
             return new Hex(
@@ -125,14 +117,6 @@ namespace MapSystem.HexCoordinateSystem
                 h1.c - h2.c,
                 h1.isGlobal && ! h2.isGlobal
                 );
-        }
-        public Hex minus (Hex h)
-        {
-            this.a -= h.a;
-            this.b -= h.b;
-            this.c -= h.c;
-            this.isGlobal = this.isGlobal && !h.isGlobal;
-            return this;
         }
         public static Hex operator* (Hex h, int n)
         {
@@ -164,6 +148,72 @@ namespace MapSystem.HexCoordinateSystem
             return h.norm == 1 ? new HexUnit(h) : null;
         }
 
+        public (int, int, int) reductHex(Hex h)
+        {
+            int a = h.a;
+            int b = 0;
+            int c = h.c;
+            int min = Min(h.a, h.c);
+            int max = Max(h.a, h.c);
+            if(min * max > 0)
+            {
+                int sub = min > 0 ? min : max;
+                a -= sub;
+                b -= sub;
+                c -= sub;
+            }
+            // 各成分の絶対値の総和を最小化する座標系であらわしたHex
+            return (a, b, c);
+        }
+        public List<HexUnit> ResolveHex()
+        {
+            List<HexUnit> ret = new List<HexUnit>(){};
+            (int, int, int) cannonical = reductHex(this);
+            (HexUnit, int) a = (cannonical.Item1 >= 0 ? HexGenerator.A : HexGenerator.BC , Abs(cannonical.Item1));
+            (HexUnit, int) b = (cannonical.Item2 >= 0 ? HexGenerator.B : HexGenerator.CA , Abs(cannonical.Item2));
+            (HexUnit, int) c = (cannonical.Item3 >= 0 ? HexGenerator.C : HexGenerator.AB , Abs(cannonical.Item3));
+
+            List<(HexUnit, int)> proper = new List<(HexUnit, int)>(){};
+            if(a.Item2 != 0)
+            {
+                proper.Add(a);
+            }
+            if(b.Item2 != 0)
+            {
+                proper.Add(b);
+            }
+            if(c.Item2 != 0)
+            {
+                proper.Add(c);
+            }
+            if(proper.Count == 2)
+            {
+                int largeKey = (proper[0].Item2 > proper[1].Item2) ? 0 : 1;
+                int smallKey = (largeKey + 1 ) % 2;
+
+                (int, int) sub = (proper[largeKey].Item2 / proper[smallKey].Item2, proper[largeKey].Item2 % proper[smallKey].Item2);
+                for (int i = 0; i <= sub.Item2; i++)
+                {
+                    ret.Add(proper[largeKey].Item1);
+                }
+                for (int i = 0; i <= proper[smallKey].Item2; i++)
+                {
+                    for (int j = 0; j <= sub.Item1; j++)
+                    {
+                        ret.Add(proper[largeKey].Item1);
+                    }
+                    ret.Add(proper[smallKey].Item1);
+                }
+            }else if(proper.Count == 1){
+                for (int i = 0; i <= proper[0].Item2; i++)
+                {
+                    ret.Add(proper[0].Item1);
+                }
+            }
+            // HexUnitの和に分解して表したHex
+            return ret;
+        }
+
 
     }
     public class HexUnit : Hex
@@ -185,6 +235,7 @@ namespace MapSystem.HexCoordinateSystem
         {
             return new HexUnit((Hex)h * -1);
         }
+
         public HexGenerator.unit Hex2unit()
         {
             int max = Max(this.a, this.c);
@@ -201,7 +252,6 @@ namespace MapSystem.HexCoordinateSystem
             return min > 0 ? HexGenerator.unit.ca : HexGenerator.unit.b; 
 
         }
-
     }
     public struct HexGenerator
     {
@@ -235,59 +285,46 @@ namespace MapSystem.HexCoordinateSystem
             {unit.ca, CA}, 
         };
 
-        public static HexUnit unit2HexRotate(unit u, int rot)
+        public static unit unitRotate(unit u, int rot)
         {
-            return unit2Hex[(unit)(((int)u + rot) % 6)];
+            return (unit)(((int)u + rot) % 6);
         }
-        public static List<Hex> L1CircleOneEdgePointsLeft(int r, unit u, List<Hex> ret)
+
+        public static List<Hex> refractEmission(int r, unit u, int refract, List<Hex> ret)
         {
-            for (int i = 1; i < r; i++)
+            for (int i = 1; i <= r; i++)
             {
-                ret.Add((unit2Hex[u] * r) + (unit2HexRotate(u, 2) * i));
+                ret.Add(liner(u, r) + rotateliner(u, i, refract));
             }
             return ret;
         }
-        public static List<Hex> L1CircleOneEdgePointsRight(int r, unit u, List<Hex> ret)
+
+        public static List<Hex> L1CircleAllEdgePoints(int r, List<Hex> ret)
         {
-            for (int i = 1; i < r; i++)
+            foreach(unit u in unit2Hex.Keys)
             {
-                ret.Add((unit2Hex[u] * r) + (unit2HexRotate(u, 4) * i));
+                ret.Add(liner(u, r));
+                refractEmission(r, u, 2, ret);
             }
             return ret;
         }
 
         public static List<Hex> L1CircleNodeSideTwoEdgesPoints(int r, unit u, List<Hex> ret)
         {
-            L1CircleOneEdgePointsLeft(r, u, ret);
-            L1CircleOneEdgePointsRight(r, u, ret);
-
-            for (int i = 1; i < r; i++)
-            {
-                ret.Add((unit2Hex[u] * r) + (unit2HexRotate(u, 2) * i));
-            }
+            ret.Add(liner(u, r));
+            refractEmission(r, u, 2, ret);
+            refractEmission(r, u, 4, ret);
             return ret;
         }
-        public static List<Hex> L1CircleAllEdgePoints(int r, List<Hex> ret)
+
+        public static Hex liner(unit u, int n)
         {
-            foreach(unit u in unit2Hex.Keys)
-            {
-                ret.Add(unit2Hex[u] * r);
-                L1CircleOneEdgePointsLeft(r, u, ret);
-            }
-            return ret;
+            return unit2Hex[u] * n;
         }
-
-        public static List<Hex> L1OddOrEvenNodes(int r, List<Hex> ret)
+        public static Hex rotateliner(unit u, int n, int rot)
         {
-            foreach(unit u in unit2Hex.Keys)
-            {
-                if((int)u % 2 == r % 2){
-                    ret.Add(unit2Hex[u] * r);
-                }
-            }
-            return ret;
+            return liner(unitRotate(u, rot), n);
         }
-
     }
 
 }

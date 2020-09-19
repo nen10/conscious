@@ -16,6 +16,7 @@ namespace MapSystem.ResourceManager
         }
         public enum GROUNDTYPE 
         {
+            blaind,
             wall,
             a,
             b,
@@ -26,10 +27,11 @@ namespace MapSystem.ResourceManager
         {
             {DECORATETYPE.template, new Dictionary<GROUNDTYPE, string>()
                 {
-                    {GROUNDTYPE.a, "bmapchip_ground_template_0"}, 
+                    {GROUNDTYPE.a, "Tilemap/mapchip_ground_template_0"}, 
                     {GROUNDTYPE.b, "Tilemap/mapchip_ground_template_5"}, 
                     {GROUNDTYPE.c, "Tilemap/mapchip_ground_template_10"}, 
                     {GROUNDTYPE.wall, "Tilemap/mapchip_ground_template_15"}, 
+                    {GROUNDTYPE.blaind, "Tilemap/mapchip_ground_template_15"}, 
                 }
             },
         };
@@ -94,7 +96,6 @@ namespace MapSystem.ResourceManager
         {
             return DECORATE2WALLSET[d] + GetWALLTYPE(h).ToString();
         }
-
 
     }
 }
