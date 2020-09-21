@@ -105,7 +105,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 128
+  spritePixelsToUnits: 170
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -151,11 +151,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 663
-        width: 128
-        height: 221
+        y: 672
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -171,12 +171,12 @@ TextureImporter:
       name: mapchip_wall_template_1
       rect:
         serializedVersion: 2
-        x: 128
-        y: 663
-        width: 128
-        height: 221
+        x: 224
+        y: 672
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -192,12 +192,12 @@ TextureImporter:
       name: mapchip_wall_template_2
       rect:
         serializedVersion: 2
-        x: 256
-        y: 663
-        width: 128
-        height: 221
+        x: 448
+        y: 672
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -213,12 +213,12 @@ TextureImporter:
       name: mapchip_wall_template_3
       rect:
         serializedVersion: 2
-        x: 384
-        y: 662
-        width: 128
-        height: 221
+        x: 672
+        y: 672
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -234,12 +234,12 @@ TextureImporter:
       name: mapchip_wall_template_4
       rect:
         serializedVersion: 2
-        x: 512
-        y: 662
-        width: 128
-        height: 221
+        x: 896
+        y: 672
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -256,11 +256,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 441
-        width: 128
-        height: 221
+        y: 448
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -276,12 +276,12 @@ TextureImporter:
       name: mapchip_wall_template_6
       rect:
         serializedVersion: 2
-        x: 128
-        y: 442
-        width: 128
-        height: 221
+        x: 224
+        y: 448
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -297,12 +297,12 @@ TextureImporter:
       name: mapchip_wall_template_7
       rect:
         serializedVersion: 2
-        x: 256
-        y: 442
-        width: 128
-        height: 221
+        x: 448
+        y: 448
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -318,12 +318,12 @@ TextureImporter:
       name: mapchip_wall_template_8
       rect:
         serializedVersion: 2
-        x: 384
-        y: 442
-        width: 128
-        height: 221
+        x: 672
+        y: 448
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -339,12 +339,12 @@ TextureImporter:
       name: mapchip_wall_template_9
       rect:
         serializedVersion: 2
-        x: 511
-        y: 440
-        width: 128
-        height: 221
+        x: 896
+        y: 448
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -361,11 +361,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 221
-        width: 128
-        height: 221
+        y: 224
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -381,12 +381,12 @@ TextureImporter:
       name: mapchip_wall_template_11
       rect:
         serializedVersion: 2
-        x: 128
-        y: 221
-        width: 128
-        height: 221
+        x: 224
+        y: 224
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -402,12 +402,12 @@ TextureImporter:
       name: mapchip_wall_template_12
       rect:
         serializedVersion: 2
-        x: 256
-        y: 221
-        width: 128
-        height: 221
+        x: 448
+        y: 224
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -423,12 +423,12 @@ TextureImporter:
       name: mapchip_wall_template_13
       rect:
         serializedVersion: 2
-        x: 384
-        y: 221
-        width: 128
-        height: 221
+        x: 672
+        y: 224
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -444,12 +444,12 @@ TextureImporter:
       name: mapchip_wall_template_14
       rect:
         serializedVersion: 2
-        x: 512
-        y: 221
-        width: 128
-        height: 221
+        x: 896
+        y: 224
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -467,10 +467,10 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 128
-        height: 221
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -486,12 +486,12 @@ TextureImporter:
       name: mapchip_wall_template_16
       rect:
         serializedVersion: 2
-        x: 127
+        x: 224
         y: 0
-        width: 128
-        height: 221
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -507,12 +507,12 @@ TextureImporter:
       name: mapchip_wall_template_17
       rect:
         serializedVersion: 2
-        x: 256
+        x: 448
         y: 0
-        width: 128
-        height: 221
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -528,12 +528,12 @@ TextureImporter:
       name: mapchip_wall_template_18
       rect:
         serializedVersion: 2
-        x: 384
+        x: 672
         y: 0
-        width: 128
-        height: 221
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -549,12 +549,12 @@ TextureImporter:
       name: mapchip_wall_template_19
       rect:
         serializedVersion: 2
-        x: 512
+        x: 896
         y: 0
-        width: 128
-        height: 221
+        width: 224
+        height: 224
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

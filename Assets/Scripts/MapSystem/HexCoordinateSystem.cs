@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.Mathf;
+using spr = MapSystem.SpriteManager;
 
 namespace MapSystem.HexCoordinateSystem
 {
@@ -10,21 +12,23 @@ namespace MapSystem.HexCoordinateSystem
         public static Vector3Int Z3Hex2sqYXZHex(Hex h)
         {
             return new Vector3Int(
+                h.a * 2 - h.c,
+                h.c * 2,
+                h.c - h.a);
+            /*
+            return new Vector3Int(
                 h.a * 2 - (h.b + h.c),
                 (h.c - h.b) * 2,
                 h.b + h.c - h.a);
+            */
         }
         public static Vector3Int sqYXZHex2UnityYXZHex(Vector3Int v)
         {
             int x = ((v.x % 2 == 0) ? v.x : v.x - 1) / 2;
             return new Vector3Int(x, v.y / 2, 0);
         }
-        public static Vector3Int Z3Hex2UnityYXZHex(Hex h)
+        public static Vector3Int Z3Hex2UnityYXZHex(spr.HexTile h)
         {
-            if(!h.isGlobal)
-            {
-                return new Vector3Int();
-            }
             return sqYXZHex2UnityYXZHex(Z3Hex2sqYXZHex(h));
         }
         public static Vector3Int UnityYXZHex2sqYXZHex(Vector3Int v)
@@ -56,21 +60,8 @@ namespace MapSystem.HexCoordinateSystem
     }
     public class Hex
     {
-        public int a
-        {
-            set { a = value; }
-            get { return a - b; }
-        }
-        public int b
-        {
-            set { a -= value; c -= value; }
-            get { return b - b; }
-        }
-        public int c
-        {
-            set { c = value; }
-            get { return c - b; }
-        }
+        public int a{get; private set;}
+        public int c{get; private set;}
         public bool isGlobal;
 
         public int norm
@@ -82,21 +73,15 @@ namespace MapSystem.HexCoordinateSystem
         {
             get { return Transform.Z3Hex2FlatYXZHex(this); }
         }
-        public Vector3Int unityYXZHex
-        {
-            get { return Transform.Z3Hex2UnityYXZHex(this); }
-        }
         public Hex()
         {
             this.a = 0;
-            this.b = 0;
             this.c = 0;
             this.isGlobal = false;
         }
         public Hex(int a, int b, int c, bool isGlobal = false)
         {
             this.a = a - b;
-            this.b = b - b;
             this.c = c - b;
             this.isGlobal = isGlobal;
         }
@@ -104,7 +89,7 @@ namespace MapSystem.HexCoordinateSystem
         {
             return new Hex(
                 h1.a + h2.a,
-                h1.b + h2.b,
+                0,
                 h1.c + h2.c,
                 h1.isGlobal ^ h2.isGlobal
                 );
@@ -113,7 +98,7 @@ namespace MapSystem.HexCoordinateSystem
         {
             return new Hex(
                 h1.a - h2.a,
-                h1.b - h2.b,
+                0,
                 h1.c - h2.c,
                 h1.isGlobal && ! h2.isGlobal
                 );
@@ -122,7 +107,7 @@ namespace MapSystem.HexCoordinateSystem
         {
             return new Hex(
                 h.a * n,
-                h.b * n,
+                0,
                 h.c * n,
                 h.isGlobal
                 );
@@ -135,10 +120,6 @@ namespace MapSystem.HexCoordinateSystem
         {
             return Max(Abs(this.a), Abs(this.c));
         }
-        public static explicit operator Vector3Int(Hex h)
-        {
-            return h.unityYXZHex;
-        }
         public static explicit operator Vector3(Hex h)
         {
             return h.flatYXZHex;
@@ -148,72 +129,10 @@ namespace MapSystem.HexCoordinateSystem
             return h.norm == 1 ? new HexUnit(h) : null;
         }
 
-        public (int, int, int) reductHex(Hex h)
-        {
-            int a = h.a;
-            int b = 0;
-            int c = h.c;
-            int min = Min(h.a, h.c);
-            int max = Max(h.a, h.c);
-            if(min * max > 0)
-            {
-                int sub = min > 0 ? min : max;
-                a -= sub;
-                b -= sub;
-                c -= sub;
-            }
-            // 各成分の絶対値の総和を最小化する座標系であらわしたHex
-            return (a, b, c);
-        }
         public List<HexUnit> ResolveHex()
         {
-            List<HexUnit> ret = new List<HexUnit>(){};
-            (int, int, int) cannonical = reductHex(this);
-            (HexUnit, int) a = (cannonical.Item1 >= 0 ? HexGenerator.A : HexGenerator.BC , Abs(cannonical.Item1));
-            (HexUnit, int) b = (cannonical.Item2 >= 0 ? HexGenerator.B : HexGenerator.CA , Abs(cannonical.Item2));
-            (HexUnit, int) c = (cannonical.Item3 >= 0 ? HexGenerator.C : HexGenerator.AB , Abs(cannonical.Item3));
-
-            List<(HexUnit, int)> proper = new List<(HexUnit, int)>(){};
-            if(a.Item2 != 0)
-            {
-                proper.Add(a);
-            }
-            if(b.Item2 != 0)
-            {
-                proper.Add(b);
-            }
-            if(c.Item2 != 0)
-            {
-                proper.Add(c);
-            }
-            if(proper.Count == 2)
-            {
-                int largeKey = (proper[0].Item2 > proper[1].Item2) ? 0 : 1;
-                int smallKey = (largeKey + 1 ) % 2;
-
-                (int, int) sub = (proper[largeKey].Item2 / proper[smallKey].Item2, proper[largeKey].Item2 % proper[smallKey].Item2);
-                for (int i = 0; i <= sub.Item2; i++)
-                {
-                    ret.Add(proper[largeKey].Item1);
-                }
-                for (int i = 0; i <= proper[smallKey].Item2; i++)
-                {
-                    for (int j = 0; j <= sub.Item1; j++)
-                    {
-                        ret.Add(proper[largeKey].Item1);
-                    }
-                    ret.Add(proper[smallKey].Item1);
-                }
-            }else if(proper.Count == 1){
-                for (int i = 0; i <= proper[0].Item2; i++)
-                {
-                    ret.Add(proper[0].Item1);
-                }
-            }
-            // HexUnitの和に分解して表したHex
-            return ret;
+            return (new HexReduct(this)).ResolveHex();
         }
-
 
     }
     public class HexUnit : Hex
@@ -224,7 +143,7 @@ namespace MapSystem.HexCoordinateSystem
 
         }
         public HexUnit(Hex h)
-         : base (h.a, h.b, h.c, false)
+         : base (h.a, 0, h.c, false)
         {
         }
         public HexUnit(int a, int b, int c)
@@ -250,7 +169,85 @@ namespace MapSystem.HexCoordinateSystem
             }
 
             return min > 0 ? HexGenerator.unit.ca : HexGenerator.unit.b; 
+        }
+    }
+    public class HexReduct
+    {
+        (int, int, int) hex;
+        (HexUnit, int) top
+        {
+            get { return (hex.Item1 >= 0 ? HexGenerator.A : HexGenerator.BC, Abs(hex.Item1)); }
+        }
+        (HexUnit, int) left
+        {
+            get { return (hex.Item2 >= 0 ? HexGenerator.B : HexGenerator.CA, Abs(hex.Item2)); }
+        }
+        (HexUnit, int) right
+        {
+            get { return (hex.Item3 >= 0 ? HexGenerator.C : HexGenerator.AB, Abs(hex.Item3)); }
+        }
+        public List<(HexUnit, int)> properRepresent(List<(HexUnit, int)> ret)
+        {
+            Action<(HexUnit, int)> act = ((HexUnit, int) x) => { if (x.Item2 != 0) { ret.Add(x); } };
+            act(this.top);
+            act(this.left);
+            act(this.right);
+            return ret;
+        }
+        public HexReduct(Hex h)
+        {
+            this.hex = reduct(h);
+        }
 
+        public static (int, int, int) reduct(Hex h)
+        {
+            int a = h.a;
+            int b = 0;
+            int c = h.c;
+            int min = Min(h.a, h.c);
+            int max = Max(h.a, h.c);
+            if(min * max > 0)
+            {
+                int sub = min > 0 ? min : max;
+                a -= sub;
+                b -= sub;
+                c -= sub;
+            }
+            // 各成分の絶対値の総和を最小化する座標系であらわしたHex
+            return (a, b, c);
+        }
+        public List<HexUnit> ResolveHex()
+        {
+            List<HexUnit> ret = new List<HexUnit>(){};
+
+            List<(HexUnit, int)> proper = this.properRepresent(new List<(HexUnit, int)>(){});
+
+            if(proper.Count == 2)
+            {
+                int largeKey = (proper[0].Item2 > proper[1].Item2) ? 0 : 1;
+                int smallKey = (largeKey + 1 ) % 2;
+
+                (int, int) sub = (proper[largeKey].Item2 / proper[smallKey].Item2, proper[largeKey].Item2 % proper[smallKey].Item2);
+                for (int i = 0; i <= sub.Item2; i++)
+                {
+                    ret.Add(proper[largeKey].Item1);
+                }
+                for (int i = 0; i <= proper[smallKey].Item2; i++)
+                {
+                    ret.Add(proper[smallKey].Item1);
+                    for (int j = 0; j <= sub.Item1; j++)
+                    {
+                        ret.Add(proper[largeKey].Item1);
+                    }
+                }
+            }else if(proper.Count == 1){
+                for (int i = 0; i <= proper[0].Item2; i++)
+                {
+                    ret.Add(proper[0].Item1);
+                }
+            }
+            // HexUnitの和に分解して表したHex
+            return ret;
         }
     }
     public struct HexGenerator
@@ -292,7 +289,7 @@ namespace MapSystem.HexCoordinateSystem
 
         public static List<Hex> refractEmission(int r, unit u, int refract, List<Hex> ret)
         {
-            for (int i = 1; i <= r; i++)
+            for (int i = 1; i < r; i++)
             {
                 ret.Add(liner(u, r) + rotateliner(u, i, refract));
             }

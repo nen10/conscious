@@ -1,67 +1,46 @@
 fileFormatVersion: 2
-guid: edb0fdace9be042578d58b5165ec09ae
+guid: bde46c567463c45b68830930c1e2fa89
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 575027161807239425
-    second: mapchip_ground_template_0
+      213: 8105449631251978885
+    second: mapchip_braind_template_0
   - first:
-      213: -6995650643725494719
-    second: mapchip_ground_template_1
+      213: -6139648363818835272
+    second: mapchip_braind_template_1
   - first:
-      213: -5365713111489273445
-    second: mapchip_ground_template_2
+      213: -5584248078273235160
+    second: mapchip_braind_template_2
   - first:
-      213: 4491255183277750468
-    second: mapchip_ground_template_3
+      213: 1866107665185010278
+    second: mapchip_braind_template_3
   - first:
-      213: 8327439696978672941
-    second: mapchip_ground_template_4
+      213: -308990234076219869
+    second: mapchip_braind_template_4
   - first:
-      213: -3263345840744300222
-    second: mapchip_ground_template_5
+      213: -117720544181436736
+    second: mapchip_braind_template_5
   - first:
-      213: 3558528852270087108
-    second: mapchip_ground_template_6
+      213: -9195391178525353806
+    second: mapchip_braind_template_6
   - first:
-      213: 9199234625972970210
-    second: mapchip_ground_template_7
+      213: 713713566680530462
+    second: mapchip_braind_template_7
   - first:
-      213: 7438921565145126932
-    second: mapchip_ground_template_8
+      213: -3688794888450210726
+    second: mapchip_braind_template_8
   - first:
-      213: -8795390418907709691
-    second: mapchip_ground_template_9
+      213: 8938692367332673912
+    second: mapchip_braind_template_9
   - first:
-      213: 4043833542453539235
-    second: mapchip_ground_template_10
+      213: -4185340685430814389
+    second: mapchip_braind_template_10
   - first:
-      213: -820729273436863248
-    second: mapchip_ground_template_11
+      213: 7958654309058858524
+    second: mapchip_braind_template_11
   - first:
-      213: 2110576668993877100
-    second: mapchip_ground_template_12
-  - first:
-      213: -6063318374975938523
-    second: mapchip_ground_template_13
-  - first:
-      213: 5727793877526053865
-    second: mapchip_ground_template_14
-  - first:
-      213: 8070160187420459116
-    second: mapchip_ground_template_15
-  - first:
-      213: -9071607332341282779
-    second: mapchip_ground_template_16
-  - first:
-      213: -2936029447990313445
-    second: mapchip_ground_template_17
-  - first:
-      213: 7922112801429344
-    second: mapchip_ground_template_18
-  - first:
-      213: -2588430585501279770
-    second: mapchip_ground_template_19
+      213: -8974991094413748645
+    second: mapchip_braind_template_12
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -105,7 +84,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 126
+  spritePixelsToUnits: 128
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -147,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: mapchip_ground_template_0
+      name: mapchip_braind_template_0
       rect:
         serializedVersion: 2
         x: 0
@@ -155,20 +134,20 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 109b8b33828eaf700800000000000000
-      internalID: 575027161807239425
+      spriteID: 58a589fbe775c7070800000000000000
+      internalID: 8105449631251978885
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mapchip_ground_template_1
+      name: mapchip_braind_template_1
       rect:
         serializedVersion: 2
         x: 128
@@ -176,20 +155,20 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1465208ddc47aee90800000000000000
-      internalID: -6995650643725494719
+      spriteID: 8b225c4a7569bcaa0800000000000000
+      internalID: -6139648363818835272
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mapchip_ground_template_2
+      name: mapchip_braind_template_2
       rect:
         serializedVersion: 2
         x: 256
@@ -197,20 +176,20 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b91a6079a582985b0800000000000000
-      internalID: -5365713111489273445
+      spriteID: 827bddc95f3c082b0800000000000000
+      internalID: -5584248078273235160
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mapchip_ground_template_3
+      name: mapchip_braind_template_3
       rect:
         serializedVersion: 2
         x: 384
@@ -218,20 +197,20 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4c8f6e22bc4245e30800000000000000
-      internalID: 4491255183277750468
+      spriteID: 6627cffc80fb5e910800000000000000
+      internalID: 1866107665185010278
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mapchip_ground_template_4
+      name: mapchip_braind_template_4
       rect:
         serializedVersion: 2
         x: 512
@@ -239,20 +218,20 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d2d76e2a842019370800000000000000
-      internalID: 8327439696978672941
+      spriteID: 32672dae40f36bbf0800000000000000
+      internalID: -308990234076219869
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mapchip_ground_template_5
+      name: mapchip_braind_template_5
       rect:
         serializedVersion: 2
         x: 0
@@ -260,20 +239,20 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 241003f6f3446b2d0800000000000000
-      internalID: -3263345840744300222
+      spriteID: 0cebc4de9c5cd5ef0800000000000000
+      internalID: -117720544181436736
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mapchip_ground_template_6
+      name: mapchip_braind_template_6
       rect:
         serializedVersion: 2
         x: 128
@@ -281,20 +260,20 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4cb7982232f626130800000000000000
-      internalID: 3558528852270087108
+      spriteID: 2b85c314178636080800000000000000
+      internalID: -9195391178525353806
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mapchip_ground_template_7
+      name: mapchip_braind_template_7
       rect:
         serializedVersion: 2
         x: 256
@@ -302,20 +281,20 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2e2a796172f3aaf70800000000000000
-      internalID: 9199234625972970210
+      spriteID: e1ebe5d15be97e900800000000000000
+      internalID: 713713566680530462
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mapchip_ground_template_8
+      name: mapchip_braind_template_8
       rect:
         serializedVersion: 2
         x: 384
@@ -323,20 +302,20 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 418d77a10cb5c3760800000000000000
-      internalID: 7438921565145126932
+      spriteID: a5406a0d794ceccc0800000000000000
+      internalID: -3688794888450210726
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mapchip_ground_template_9
+      name: mapchip_braind_template_9
       rect:
         serializedVersion: 2
         x: 512
@@ -344,20 +323,20 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 50fb124930f70f580800000000000000
-      internalID: -8795390418907709691
+      spriteID: 8790c5f495d9c0c70800000000000000
+      internalID: 8938692367332673912
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mapchip_ground_template_10
+      name: mapchip_braind_template_10
       rect:
         serializedVersion: 2
         x: 0
@@ -365,20 +344,20 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3a1b0c48e259e1830800000000000000
-      internalID: 4043833542453539235
+      spriteID: b4908ec42deaae5c0800000000000000
+      internalID: -4185340685430814389
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mapchip_ground_template_11
+      name: mapchip_braind_template_11
       rect:
         serializedVersion: 2
         x: 128
@@ -386,20 +365,20 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0f40800031f2c94f0800000000000000
-      internalID: -820729273436863248
+      spriteID: c1ec5956de1d27e60800000000000000
+      internalID: 7958654309058858524
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mapchip_ground_template_12
+      name: mapchip_braind_template_12
       rect:
         serializedVersion: 2
         x: 256
@@ -407,161 +386,14 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c647b925c464a4d10800000000000000
-      internalID: 2110576668993877100
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: mapchip_ground_template_13
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 128
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 520e5731014cadba0800000000000000
-      internalID: -6063318374975938523
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: mapchip_ground_template_14
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 128
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9e309983f263d7f40800000000000000
-      internalID: 5727793877526053865
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: mapchip_ground_template_15
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c6042b3dee7feff60800000000000000
-      internalID: 8070160187420459116
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: mapchip_ground_template_16
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 0
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 52808f5d13d2b1280800000000000000
-      internalID: -9071607332341282779
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: mapchip_ground_template_17
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 0
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b1e7376d5c02147d0800000000000000
-      internalID: -2936029447990313445
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: mapchip_ground_template_18
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 0
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 067566f9e152c1000800000000000000
-      internalID: 7922112801429344
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: mapchip_ground_template_19
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 0
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6e99079b81c041cd0800000000000000
-      internalID: -2588430585501279770
+      spriteID: b569c23b62d627380800000000000000
+      internalID: -8974991094413748645
       vertices: []
       indices: 
       edges: []
