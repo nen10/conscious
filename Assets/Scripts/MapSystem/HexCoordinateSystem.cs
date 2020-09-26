@@ -250,7 +250,7 @@ namespace MapSystem.HexCoordinateSystem
             return ret;
         }
     }
-    public struct HexGenerator
+    public readonly struct HexGenerator
     {
         public static readonly Hex O = new Hex(0, 0, 0);
         public static readonly HexUnit A = new HexUnit(1, 0, 0);

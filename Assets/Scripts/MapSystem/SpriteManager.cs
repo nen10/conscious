@@ -59,7 +59,7 @@ namespace MapSystem.SpriteManager
     public class HexTile : Hex
     {
         private MapData map;
-        public Tiling til{ get { return this.map.til; } }
+        public Tiling til { get { return this.map.til; } }
         public HexTile(MapData map, int a, int b, int c)
          : base(a, b, c, true)
         {
@@ -76,21 +76,21 @@ namespace MapSystem.SpriteManager
             get { return HexCoordinateSystem.Transform.Z3Hex2UnityYXZHex(this); }
         }
 
-        public static HexTile operator+ (HexTile h1, Hex h2)
+        public static HexTile operator +(HexTile h1, Hex h2)
         {
             return new HexTile(h1.map, (Hex)h1 + h2);
         }
 
-        public static HexTile operator- (HexTile h1, Hex h2)
+        public static HexTile operator -(HexTile h1, Hex h2)
         {
             return new HexTile(h1.map, (Hex)h1 - h2);
         }
 
-        public static HexTile operator* (HexTile h, int n)
+        public static HexTile operator *(HexTile h, int n)
         {
             return new HexTile(h.map, (Hex)h * n);
         }
-        public static HexTile operator- (HexTile h)
+        public static HexTile operator -(HexTile h)
         {
             return h * -1;
         }
@@ -100,10 +100,12 @@ namespace MapSystem.SpriteManager
             return h.unityYXZHex;
         }
 
-        public bool hasWall(HexUnit h){
+        public bool hasWall(HexUnit h)
+        {
             return this.map.hasWall(this + h);
         }
-        public bool hasWall(){
+        public bool hasWall()
+        {
             return this.map.hasWall(this);
         }
         public string groundName
@@ -114,7 +116,11 @@ namespace MapSystem.SpriteManager
         public void SetTileGroundInit(Hex h)
         {
             map.layerGround.SetTile((Vector3Int)(this + h), Resources.Load<Tile>(til.GetTilePathGround(GetRandomValue())));
-        } 
+        }
+        public void SetTileGround(Hex h, Tile t)
+        {
+            map.layerGround.SetTile((Vector3Int)(this + h), t);
+        }
 
         public void SetTileWall(Hex h, Tile t)
         {
@@ -123,8 +129,12 @@ namespace MapSystem.SpriteManager
         }
         public void SetTileGround(Hex h, gen.unit generatePoint)
         {
-            map.layerGround.SetTile((Vector3Int)(this + h), GetTileGround(h, generatePoint));
-        } 
+            SetTileGround(this + h, generatePoint);
+        }
+        public static void SetTileGround(HexTile ht, gen.unit generatePoint)
+        {
+            ht.map.layerGround.SetTile((Vector3Int)ht, GetTileGround(ht, generatePoint));
+        }
         public void SetTileBlaind(Hex h, Tile t)
         {
             map.layerBlaind.SetTile((Vector3Int)(this + h), t);
@@ -135,7 +145,7 @@ namespace MapSystem.SpriteManager
         }
         public string GetTilePathBlaind(int sightRadius, int count)
         {
-            return Naming.GetTilePathBlaind(til.deco, blaindId(sightRadius,count));
+            return Naming.GetTilePathBlaind(til.deco, blaindId(sightRadius, count));
         }
         public string GetTilePathBlaind()
         {
@@ -146,22 +156,47 @@ namespace MapSystem.SpriteManager
             return ((count % sightRadius) == 0 ? 1 : 2) + ((int)(count / sightRadius) * 2);
         }
 
-        public Tile GetTileGround(Hex h, gen.unit generatePoint)
+        public static Tile GetTileGround(HexTile ht, gen.unit generatePoint)
         {
-            string n = (this + h).groundName;
-            return Resources.Load<Tile>(n == "" ? til.GetTilePathGround(GetRandomValue(h, generatePoint)) : Naming.TILEDIRECTORY + n);
-        } 
+            string n = ht.groundName;
+            return Resources.Load<Tile>(n == "" ? ht.til.GetTilePathGround(GetRandomValue(ht, generatePoint)) : Naming.TILEDIRECTORY + n);
+        }
 
-        public int GetRandomValue()
+        public static int GetRandomValue()
         {
             int randomvalue = (int)Naming.GROUNDTYPE.a;
             return randomvalue;
         }
-        public int GetRandomValue(Hex h, gen.unit generatePoint)
+        public static int GetRandomValue(HexTile ht, gen.unit generatePoint)
         {
-            int randomvalue = (int)Naming.GROUNDTYPE.wall;
-            return randomvalue;
+            return ht.GetWallThreadshold(generatePoint) < Random.Range(0f, 8f) ? (int)Naming.GROUNDTYPE.wall : (int)Naming.GROUNDTYPE.a;
         }
 
+
+
+        private int hasWallAround(gen.unit generatePoint)
+        {
+            int state = 0;
+            state += hasWall(gen.unit2Hex[gen.unitRotate(generatePoint, 4)]) ? 1 : 0;
+            state += hasWall(gen.unit2Hex[generatePoint]) ? 2 : 0;
+            state += hasWall(gen.unit2Hex[gen.unitRotate(generatePoint, 2)]) ? 4 : 0;
+            return state;
+        }
+
+        private float GetWallThreadshold(gen.unit generatePoint)
+        {
+            switch (hasWallAround(generatePoint))
+            {
+                case 7: return 1f;
+                case 6: return 5f;
+                case 5: return 7f;
+                case 4: return 3f;
+                case 3: return 5f;
+                case 2: return 3f;
+                case 1: return 3f;
+                case 0: return 5f;
+                default: return 8f;
+            }
+        }
     }
 }

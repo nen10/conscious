@@ -26,27 +26,22 @@ namespace MapSystem
         }
 
 
-        public void SetTileGroundInductive(Hex h, gen.unit unit, int rot)
-        {
-            SetTileGroundInductive(generatedCenter, h, unit, rot);
-        }
-        public static void SetTileGroundInductive(HexTile ht, Hex h, gen.unit unit, int rot)
-        {
-            ht.SetTileGround(h, gen.unitRotate(unit, rot));
-        }
-
         public void SetTileGroundInductive(gen.unit u, int rot1, int rot2)
         {
-            foreach(Hex h in gen.refractEmission(generatedRadius, u, rot1, new List<Hex>(){}))
-            {
-                SetTileGroundInductive(generatedCenter, h, u, rot2);
-            }
+            SetTileGroundInductive(generatedCenter, generatedRadius, u, rot1, rot2);
         }
         public static void SetTileGroundInductive(HexTile ht, int r, gen.unit u, int rot1, int rot2)
         {
             foreach(Hex h in gen.refractEmission(r, u, rot1, new List<Hex>(){}))
             {
-                SetTileGroundInductive(ht, h, u, rot2);
+                ht.SetTileGround(h, gen.unitRotate(u, rot2));
+            }
+        }
+        public static void SetTileGroundInductive(HexTile ht, int r, gen.unit u, int rot1, Tile t)
+        {
+            foreach(Hex h in gen.refractEmission(r, u, rot1, new List<Hex>(){}))
+            {
+                ht.SetTileGround(h, t);
             }
         }
         public void SetTileGroundHorizon(gen.unit step)
@@ -72,7 +67,7 @@ namespace MapSystem
             }
             foreach(gen.unit u in endPoints)
             {
-                SetTileGroundInductive(gen.liner(u, generatedRadius), u, 3);
+                generatedCenter.SetTileGround(gen.liner(u, generatedRadius), gen.unitRotate(u, 3));
             }
         }
         public void SetTileGroundCircle(int r)
@@ -100,41 +95,6 @@ namespace MapSystem
                     ht.SetTileWall(h, gt(r > sightRadius, (ht + h).GetTilePathWall()));
                     count++;
                 }
-            }
-        }
-        public void SetTileOverGround(HexTile ht)
-        {
-            Func<bool, string, Tile> gt = (bool b, string s) => { return b ? null : Resources.Load<Tile>(s); };
-            for (int r = 1; r <= generatedRadius; r++)
-            {
-                if(r < sightRadius) { SetTileOverGroundInSight(ht, r); }
-                else if(r == sightRadius) { SetTileOverGroundFrontier(ht); }
-                else if(r > sightRadius) { SetTileOverGroundOutOfSight(ht, r); }
-            }
-        }
-        public void SetTileOverGroundInSight(HexTile ht, int r)
-        {
-            foreach(Hex h in gen.L1CircleAllEdgePoints(r, new List<Hex>(){}))
-            {
-                ht.SetTileWall(h, Resources.Load<Tile>((ht + h).GetTilePathWall()));
-            }
-        }
-
-        public void SetTileOverGroundFrontier(HexTile ht)
-        {
-            int count = 0;
-            foreach(Hex h in gen.L1CircleAllEdgePoints(sightRadius, new List<Hex>(){}))
-            {
-                ht.SetTileBlaind(h, Resources.Load<Tile>(ht.GetTilePathBlaind(sightRadius, count)));
-                ht.SetTileWall(h, Resources.Load<Tile>((ht + h).GetTilePathWall()));
-                count++;
-            }
-        }
-        public void SetTileOverGroundOutOfSight(HexTile ht, int r)
-        {
-            foreach(Hex h in gen.L1CircleAllEdgePoints(r, new List<Hex>(){}))
-            {
-                ht.SetTileBlaind(h, Resources.Load<Tile>(ht.GetTilePathBlaind()));
             }
         }
 

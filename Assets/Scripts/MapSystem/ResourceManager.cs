@@ -38,7 +38,7 @@ namespace MapSystem.ResourceManager
             return GetTilePathGround(Naming.GROUNDTYPE.wall).Split('/')[1];
         }
     }
-    public struct Naming
+    public readonly struct Naming
     {
 
         public enum DECORATETYPE
