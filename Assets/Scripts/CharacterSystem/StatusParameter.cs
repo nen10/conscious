@@ -6,7 +6,6 @@ using MapSystem.HexCoordinateSystem;
 
 namespace CharacterSystem.StatusParameter
 {
-
     public readonly struct growparam
     {
         public struct rate
@@ -28,12 +27,93 @@ namespace CharacterSystem.StatusParameter
             public static readonly float mult1100By1000Lv = 1.007028f;
             public static readonly float mult1200By1000Lv = 1.007116f;
             public static readonly float mult1300By1000Lv = 1.007196f;
+
+            // キャラクター成長率
+            public static readonly float Up0 = mult1100By1000Lv;
+            public static readonly float Up1 = mult1000By1000Lv;
+            public static readonly float Up2 = mult1100By1000Lv;
+            public static readonly float Up3 = mult1200By1000Lv;
+            public static readonly float Up4 = mult1300By1000Lv;
             
+            // 装備のRNG,SIG成長率
+            public static readonly float scale0 = mult0001By1Lv;
+            public static readonly float scale1 = mult0001By1Lv;
+            public static readonly float scale2 = mult0001By1Lv;
+            // 装備の成長率
+            public static readonly float equip0 = mult1000By100Lv;
+            public static readonly float equipH1 = mult1100By100Lv;
+            public static readonly float equipH2 = mult1200By100Lv;
+            public static readonly float equipH3 = mult1300By100Lv;
+            public static readonly float equipH4 = mult1400By100Lv;
+            public static readonly float equipH5 = mult1500By100Lv;
+            public static readonly float equipL1 = mult0900By100Lv;
+            public static readonly float equipL2 = mult0800By100Lv;
+            public static readonly float equipL3 = mult0700By100Lv;
+            public static readonly float equipL4 = mult0600By100Lv;
+            public static readonly float equipL5 = mult0500By100Lv;
         }
+
+        public static readonly Dictionary<int, float> rateDict
+        = new Dictionary<int, float>()
+        {
+            {-2, rate.mult0000By1Lv},
+            {-1, rate.mult0001By1Lv},
+            { 0, rate.equip0},
+            { 1, rate.equipH1},
+            { 2, rate.equipH2},
+            { 3, rate.equipH3},
+            { 4, rate.equipH4},
+            { 5, rate.equipH5},
+            {11, rate.equipL1},
+            {12, rate.equipL2},
+            {13, rate.equipL3},
+            {14, rate.equipL4},
+            {15, rate.equipL5},
+        };
+        public static readonly Dictionary<string, Dictionary<characteristic, float>> role2rate 
+        = new Dictionary<string, Dictionary<characteristic, float>>()
+        {
+            {"HP", new Dictionary<characteristic, float>()
+                {
+                    {characteristic.will, rate.Up0},
+                    {characteristic.hostile, rate.Up4},
+                    {characteristic.mercy, rate.Up1},
+                    {characteristic.friendship, rate.Up2},
+                    {characteristic.insight, rate.Up3},
+                }
+            },
+            {"MOV", new Dictionary<characteristic, float>()
+                {
+                    {characteristic.will, rate.Up0},
+                    {characteristic.hostile, rate.Up1},
+                    {characteristic.mercy, rate.Up4},
+                    {characteristic.friendship, rate.Up3},
+                    {characteristic.insight, rate.Up2},
+                }
+            },
+            {"CP", new Dictionary<characteristic, float>()
+                {
+                    {characteristic.will, rate.Up0},
+                    {characteristic.hostile, rate.Up2},
+                    {characteristic.mercy, rate.Up3},
+                    {characteristic.friendship, rate.Up4},
+                    {characteristic.insight, rate.Up1},
+                }
+            },
+            {"DEX", new Dictionary<characteristic, float>()
+                {
+                    {characteristic.will, rate.Up0},
+                    {characteristic.hostile, rate.Up3},
+                    {characteristic.mercy, rate.Up2},
+                    {characteristic.friendship, rate.Up1},
+                    {characteristic.insight, rate.Up4},
+                }
+            },
+        };
 
         public enum characteristic 
         {
-            will,
+            will = -1,
             hostile,
             mercy,
             friendship,
@@ -74,7 +154,6 @@ namespace CharacterSystem.StatusParameter
             f_return = 11,
             i_counter = 15,
         }
-
         public enum physicalSkill
         {
             w_menu = -2,
@@ -129,7 +208,6 @@ namespace CharacterSystem.StatusParameter
             }
             return p;
         }
-
     }
 
     // 成長と独立に値が変化するパラメータ
@@ -138,8 +216,6 @@ namespace CharacterSystem.StatusParameter
         public float c; // current value
         public float m; // current max value
         public ParamVariable(float b, float g) : base(b, g) { m = b * g; c = m; }
-        public ParamVariable(float v, float b, float g) : base(v, b, g) { m = v; c = m; }
-        public ParamVariable(float v, float b, float g, float c) : base(v, b, g) { this.c = c; }
 
         public override float grow(int LV = 1)
         {
@@ -154,7 +230,7 @@ namespace CharacterSystem.StatusParameter
 
     public class EXP : ParamMeta
     {
-        // experience = comprehend : 理解
+        // experience = comprehend 理解
         public EXP(float v) : base(v) { }
     }
     public class LV : ParamMeta
@@ -192,46 +268,34 @@ namespace CharacterSystem.StatusParameter
     }
     public class INT : ParamMeta
     {
+        // integration 統合
         public INT(float v) : base(v) { }
     }
 
-
     public class HP : ParamVariable
     {
-        
-        public HP(float b, float g) : base(b, g) { }
-        public HP(float v, float b, float g) : base(v, b, g) { }
-        public HP(float v, float b, float g, float c) : base(v, b, g) { }
+        public HP(float b, growparam.characteristic role) : base(b, growparam.role2rate["HP"][role]) { }
     }
     public class CP : ParamVariable
     {
-        
-        public CP(float b, float g) : base(b, g) { }
-        public CP(float v, float b, float g) : base(v, b, g) { }
-        public CP(float v, float b, float g, float c) : base(v, b, g) { }
+        public CP(float b, growparam.characteristic role) : base(b, growparam.role2rate["CP"][role]) { }
     }
     public class MOV : ParamVariable
     {
-        
-        public MOV(float b, float g) : base(b, g) { }
-        public MOV(float v, float b, float g) : base(v, b, g) { }
-        public MOV(float v, float b, float g, float c) : base(v, b, g) { }
+        public MOV(float b, growparam.characteristic role) : base(b, growparam.role2rate["MOV"][role]) { }
     }
     public class DEX : Param
     {
-        public DEX(float b, float g) : base(b, g) { }
-        public DEX(float v, float b, float g) : base(v, b, g) { }
+        public DEX(float b, growparam.characteristic role) : base(b, growparam.role2rate["DEX"][role]) { }
     }
 
     public class ParamMin : Param
     {
         public ParamMin(float b, float g) : base(b, g) { }
-        public ParamMin(float v, float b, float g) : base(v, b, g) { }
     }
     public class ParamMax : Param
     {
         public ParamMax(float b, float g) : base(b, g) { }
-        public ParamMax(float v, float b, float g) : base(v, b, g) { }
     }
     public abstract class ParamRanged
     {
@@ -244,13 +308,6 @@ namespace CharacterSystem.StatusParameter
             this.min = new ParamMin(min_base, min_grow);
             this.max = new ParamMax(max_base, max_grow);
         }
-        public ParamRanged(
-            float min, float min_base, float min_grow,
-            float max, float max_base, float max_grow)
-        {
-            this.min = new ParamMin(min, min_base, min_grow);
-            this.max = new ParamMax(max, max_base, max_grow);
-        }
     }
 
     public class RNG : ParamRanged
@@ -259,10 +316,6 @@ namespace CharacterSystem.StatusParameter
             float min_base, float min_grow,
             float max_base, float max_grow)
          : base(min_base, min_grow, max_base, max_grow) { }
-        public RNG(
-            float min, float min_base, float min_grow,
-            float max, float max_base, float max_grow)
-         : base(min, min_base, min_grow, max, max_base, max_grow) { }
     }
     public class SIG : ParamRanged
     {
@@ -270,20 +323,16 @@ namespace CharacterSystem.StatusParameter
             float min_base, float min_grow,
             float max_base, float max_grow)
          : base(min_base, min_grow, max_base, max_grow) { }
-        public SIG(
-            float min, float min_base, float min_grow,
-            float max, float max_base, float max_grow)
-         : base(min, min_base, min_grow, max, max_base, max_grow) { }
     }
     public class durability : ParamVariable
     {
-        public durability(float v, float b, float g) : base(v, b, g) { }
-        public durability(float v, float b, float g, float c) : base(v, b, g) { }
+        public bool isUseItem;
+        public durability(float b, float g, bool u = false) : base(b, g) { isUseItem = u; }
     }
 
     public class ParamFlat : Param
     {
-        public ParamFlat(float v, float b, float g) : base(v, b, g) { }
+        public ParamFlat(float b, float g) : base(b, g) { }
     }
 
     public abstract class Identifier
@@ -366,24 +415,25 @@ namespace CharacterSystem.StatusParameter
         public SkillSelf(string name, growparam.socialSkill id, ParamSkillLevels r)
          : base(name, id, r) { }
     }
-    public class ParamEquepSkill
+    public class ParamEquipSkill
     {
         public SkillInoperative inoperative;
         public SkillOperative operative;
         public SkillSpace space;
         public SkillSelf self;
-        public ParamEquepSkill(
-            string name_h, growparam.socialSkill id_h, ParamSkillLevels req_h,
-            string name_m, growparam.socialSkill id_m, ParamSkillLevels req_m,
-            string name_f, growparam.socialSkill id_f, ParamSkillLevels req_f,
-            string name_i, growparam.socialSkill id_i, ParamSkillLevels req_i)
+
+        public ParamEquipSkill(
+            SkillInoperative h,
+            SkillOperative m,
+            SkillSpace f,
+            SkillSelf i)
         {
-            inoperative = new SkillInoperative(name_h, id_h, req_h);
-            operative = new SkillOperative(name_m, id_m, req_m);
-            space = new SkillSpace(name_f, id_f, req_f);
-            self = new SkillSelf(name_i, id_i, req_i);
+            inoperative = h;
+            operative = m;
+            space = f;
+            self = i;
         }
-        public ParamSkillLevels skillUnrockAll()
+        public ParamSkillLevels reqSkillLevelUnrockAll()
         {
             return new ParamSkillLevels(
                 (int)(inoperative.req.hostile.p + operative.req.hostile.p + space.req.hostile.p + self.req.hostile.p),
@@ -402,10 +452,45 @@ namespace CharacterSystem.StatusParameter
         public IdentifierEquip(string classname, durability d, int l = 0)
          : base(classname)
         {
+            // 値の範囲内でランダムに決めたい
             this.reinforce = new LV(l);
             this.d = d;
         }
-
+    }
+    public class StatusEquip : IdentifierEquip
+    {
+        public growparam.characteristic role;
+        public ParamEquipSkill socialSkills;
+        public ParamFlat HP;
+        public ParamFlat MOV;
+        public ParamFlat CP;
+        public ParamFlat DEX;
+        public RNG RNG; 
+        public SIG SIG; 
+        public StatusEquip(
+            string classname, 
+            growparam.characteristic role,
+            ParamEquipSkill skill,
+            int lvr,
+            durability d,
+            ParamFlat HP,
+            ParamFlat MOV,
+            ParamFlat CP,
+            ParamFlat DEX,
+            RNG RNG,
+            SIG SIG
+            )
+         : base(classname, d, lvr)
+        {
+            this.role = role;
+            this.socialSkills = skill;
+            this.HP = HP;
+            this.MOV = MOV;
+            this.CP = CP;
+            this.DEX = DEX;
+            this.RNG = RNG;
+            this.SIG = SIG;
+        }
     }
     public class IdentifierCharactor : Identifier
     {
@@ -418,98 +503,86 @@ namespace CharacterSystem.StatusParameter
             this.name = name;
             this.role = role;
         }
-
-    }
-
-    public class IdentifierParty : Identifier
-    {
-        public List<StatusCharactor> members;
-
-        public IdentifierParty(string classname)
-         : base(classname)
-        {
-            // jsonとか読み込んでmemberをつくろう
-            members = null;
-        }
-
-    }
-    public abstract class Status
-    {
-    }
-    public class StatusEquip : IdentifierEquip
-    {
-        public growparam.characteristic role;
-        public ParamEquepSkill socialSkills;
-        public ParamFlat HP;
-        public ParamFlat MOV;
-        public ParamFlat CP;
-        public ParamFlat DEX;
-        public RNG RNG; 
-        public SIG SIG; 
-
-
-
-        public StatusEquip(string classname, durability d, int l = 0)
-         : base(classname, d, l)
-        {
-            // jsonとか読み込んで作ろう
-            role = growparam.characteristic.free;
-            socialSkills = null;
-            HP = null;
-            MOV = null;
-            CP = null;
-            DEX = null;
-            RNG = null;
-            SIG = null;
-        }
     }
     public class StatusCharactor : IdentifierCharactor
     {
         public StatusEquip equip;
         public ParamSkillLevels skillLVsSocial;
+        public INT INT;
         public HP HP;
         public MOV MOV;
         public CP CP;
         public DEX DEX;
-        public RNG RNG; 
-        public SIG SIG; 
-
-
         public StatusCharactor(
-            string classname, string name, growparam.characteristic role,
-            StatusEquip e, ParamSkillLevels social)
-         : base(classname, name ,role)
+            string classname,
+            string name,
+            int role,
+            StatusEquip e,
+            ParamSkillLevels social,
+            int INT,
+            float HP,
+            float MOV,
+            float CP,
+            float DEX,
+            float RNGmin,
+            float RNGmax,
+            float SIGmin,
+            float SIGmax
+            )
+         : base(classname, name, (growparam.characteristic)role)
         {
             this.equip = e;
             this.skillLVsSocial = social;
-            // jsonとか読み込んで作ろう
-            HP = null;
-            MOV = null;
-            CP = null;
-            DEX = null;
-            RNG = null;
-            SIG = null;
+            this.INT = new INT(INT);
+            this.HP = new HP(HP, this.role);
+            this.MOV = new MOV(MOV, this.role);
+            this.CP  = new CP(CP, this.role);
+            this.DEX = new DEX(DEX, this.role);
         }
+    }
+
+    public class IdentifierParty : Identifier
+    {
+        public List<StatusCharactor> members;
+        public int[] memberIds;
+
+        public IdentifierParty(string classname, List<StatusCharactor> m, int[] ids)
+         : base(classname)
+        {
+            members = m;
+            memberIds = ids;
+        }
+
     }
     public class StatusParty : IdentifierParty
     {
+        public static int playerLvp = 1;
+        public static int playerLvg = 0;
+        public static int playerLvc = 0;
         public ParamSkillLevels skillLVsPhysical;
         public LVparty lv;
         public LV global;
         public LV convergence;
         public List<IdentifierEquip> items;
         public StatusParty(
-            string classname, string partyname,
+            string classname,
+            List<StatusCharactor> members,
+            int[] ids,
             ParamSkillLevels physical,
-            int pLv = 1, int gLv = 1, int cLv = 1,
+            int lvr = 0,
+            int lvg = 0,
+            int lvc = 0,
             List<IdentifierEquip> items = null)
-         : base(classname)
+         : base(classname, members, ids)
         {
             this.skillLVsPhysical = physical;
-            this.lv = new LVparty(pLv);
-            this.global = new LV(gLv);
-            this.convergence = new LV(cLv);
-            this.items = items;
+
+            // 値の範囲内でランダムに決めたい
+            lv = new LVparty(playerLvp + lvr);
+            lv = new LVparty(playerLvg + lvg);
+            lv = new LVparty(playerLvc + lvc);
+
+            this.items = items == null ? new List<IdentifierEquip>(){ } : items;
         }
     }
 }
