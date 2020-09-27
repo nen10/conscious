@@ -169,7 +169,7 @@ namespace CharacterSystem.ResourceManager
             public static readonly string DirSkill = "Json/Skill/";
             public static readonly string DirEquip = "Json/Equip/";
             public static readonly string DirCharactor = "Json/Charactor/";
-            public static readonly string DirParty = "Json/PartySets/";
+            public static readonly string DirPartySets = "Json/PartySets/";
             public static void JsonSave()
             {
             }
@@ -193,7 +193,7 @@ namespace CharacterSystem.ResourceManager
             }
             public static JsonPartySets JsonRoadPartySets(string name)
             {
-                return JsonRoad<JsonPartySets>(DirParty + name);
+                return JsonRoad<JsonPartySets>(DirPartySets + name);
             }
 
         }

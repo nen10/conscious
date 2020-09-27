@@ -1,0 +1,62 @@
+{
+  "file_id1": {
+    "partyid": 0,
+    "members": [
+      ""
+    ],
+    "skilltree": {
+      "h": 0,
+      "m": 0,
+      "f": 0,
+      "i": 0
+    },
+    "lvr": 0,
+    "lvg": 0,
+    "lvc": 0
+  },
+  "file_id2": {
+    "partyid": 0,
+    "members": [
+      ""
+    ],
+    "skilltree": {
+      "h": 0,
+      "m": 0,
+      "f": 0,
+      "i": 0
+    },
+    "lvr": 0,
+    "lvg": 0,
+    "lvc": 0
+  },
+  "file_id3": {
+    "partyid": 0,
+    "members": [
+      ""
+    ],
+    "skilltree": {
+      "h": 0,
+      "m": 0,
+      "f": 0,
+      "i": 0
+    },
+    "lvr": 0,
+    "lvg": 0,
+    "lvc": 0
+  },
+  "file_id4": {
+    "partyid": 0,
+    "members": [
+      ""
+    ],
+    "skilltree": {
+      "h": 0,
+      "m": 0,
+      "f": 0,
+      "i": 0
+    },
+    "lvr": 0,
+    "lvg": 0,
+    "lvc": 0
+  }
+}
