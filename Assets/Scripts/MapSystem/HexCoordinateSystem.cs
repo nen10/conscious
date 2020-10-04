@@ -9,12 +9,14 @@ namespace MapSystem.HexCoordinateSystem
 {
     public struct Transform
     {
+        public static float TWO_OVER_ROOT_THREE = 0.875f;
+        public static float scale = 0.85f;
         public static Vector3Int Z3Hex2sqYXZHex(Hex h)
         {
             return new Vector3Int(
                 h.a * 2 - h.c,
                 h.c * 2,
-                h.c - h.a);
+                0);
             /*
             return new Vector3Int(
                 h.a * 2 - (h.b + h.c),
@@ -44,19 +46,6 @@ namespace MapSystem.HexCoordinateSystem
         {
             return sqYXZHex2Z3Hex(UnityYXZHex2sqYXZHex(v), true);
         }
-        public static Vector3 sqYXZHex2FlatYXZHex(Vector3Int v)
-        {
-            float x = (float)v.x / 2;
-            return new Vector3(x, (float)v.y / 2, 0);
-        }
-        public static Vector3Int flatYXZHex2sqYXZHex(Vector3 v)
-        {
-            return new Vector3Int((int)(v.x * 2), (int)(v.y * 2), 0);
-        }
-        public static Vector3 Z3Hex2FlatYXZHex(Hex h)
-        {
-            return sqYXZHex2FlatYXZHex(Z3Hex2sqYXZHex(h));
-        }
     }
     public class Hex
     {
@@ -69,10 +58,6 @@ namespace MapSystem.HexCoordinateSystem
             get { return L1Norm(); }
         }
 
-        public Vector3 flatYXZHex
-        {
-            get { return Transform.Z3Hex2FlatYXZHex(this); }
-        }
         public Hex()
         {
             this.a = 0;
@@ -119,10 +104,6 @@ namespace MapSystem.HexCoordinateSystem
         public int L1Norm()
         {
             return Max(Abs(this.a), Abs(this.c));
-        }
-        public static explicit operator Vector3(Hex h)
-        {
-            return h.flatYXZHex;
         }
         public HexUnit HexUnit(Hex h)
         {

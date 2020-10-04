@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Object;
 using UnityEngine.Tilemaps;
 using MapSystem.HexCoordinateSystem;
 using gen = MapSystem.HexCoordinateSystem.HexGenerator;
@@ -11,13 +12,17 @@ namespace MapSystem.SpriteManager
     
     public class MapData
     {
+        public Grid oneFloor;
         public Tilemap layerGround;
+        public UnityEngine.Transform layerEntities;
         public Tilemap layerOnGround;
         public Tilemap layerBlaind;
+        public UnityEngine.Transform a;
 
         public Tiling til;
-        public MapData(Tilemap ground, Tilemap onGround, Tilemap blaind, Tiling til)
+        public MapData(Grid floor, Tilemap ground, Tilemap onGround, Tilemap blaind, Tiling til)
         {
+            this.oneFloor = floor;
             this.layerGround = ground;
             this.layerOnGround = onGround;
             this.layerBlaind = blaind;
@@ -75,6 +80,10 @@ namespace MapSystem.SpriteManager
         {
             get { return HexCoordinateSystem.Transform.Z3Hex2UnityYXZHex(this); }
         }
+        public Vector3 unityXYZ
+        {
+            get { return this.map.oneFloor.CellToWorld((Vector3Int)this); }
+        }
 
         public static HexTile operator +(HexTile h1, Hex h2)
         {
@@ -98,6 +107,11 @@ namespace MapSystem.SpriteManager
         public static explicit operator Vector3Int(HexTile h)
         {
             return h.unityYXZHex;
+        }
+
+        public static explicit operator Vector3(HexTile h)
+        {
+            return h.unityXYZ;
         }
 
         public bool hasWall(HexUnit h)
@@ -172,8 +186,6 @@ namespace MapSystem.SpriteManager
             return ht.GetWallThreadshold(generatePoint) < Random.Range(0f, 8f) ? (int)Naming.GROUNDTYPE.wall : (int)Naming.GROUNDTYPE.a;
         }
 
-
-
         private int hasWallAround(gen.unit generatePoint)
         {
             int state = 0;
@@ -197,6 +209,13 @@ namespace MapSystem.SpriteManager
                 case 0: return 5f;
                 default: return 8f;
             }
+        }
+
+        public void SetCharactor(string raceName, string skin = "")
+        {
+            GameObject origin = (GameObject)Resources.Load("Character/Prehub/" + raceName + skin);
+            GameObject ch = Instantiate(origin, (Vector3)this + new Vector3(0,0.07f,0), Quaternion.identity);
+            ch.transform.SetParent(map.oneFloor.transform);
         }
     }
 }
