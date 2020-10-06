@@ -7,10 +7,12 @@ using spr = MapSystem.SpriteManager;
 
 namespace MapSystem.HexCoordinateSystem
 {
-    public struct Transform
+    public struct MathHex
     {
-        public static float TWO_OVER_ROOT_THREE = 0.875f;
-        public static float scale = 0.85f;
+        public static int SafeMod(int num, int devider)
+        {
+            return (num + devider) % devider;
+        }
         public static Vector3Int Z3Hex2sqYXZHex(Hex h)
         {
             return new Vector3Int(
@@ -29,7 +31,7 @@ namespace MapSystem.HexCoordinateSystem
             int x = ((v.x % 2 == 0) ? v.x : v.x - 1) / 2;
             return new Vector3Int(x, v.y / 2, 0);
         }
-        public static Vector3Int Z3Hex2UnityYXZHex(spr.HexTile h)
+        public static Vector3Int Z3Hex2UnityYXZHex(spr.HexSprite h)
         {
             return sqYXZHex2UnityYXZHex(Z3Hex2sqYXZHex(h));
         }
@@ -70,6 +72,30 @@ namespace MapSystem.HexCoordinateSystem
             this.c = c - b;
             this.isGlobal = isGlobal;
         }
+        public override bool Equals(object obj)
+        {
+            return obj is Hex hex &&
+                   a == hex.a &&
+                   c == hex.c &&
+                   isGlobal == hex.isGlobal ;
+        }
+        public override int GetHashCode()
+        {
+            int hashCode = 296152123;
+            hashCode = hashCode * -1521134295 + a.GetHashCode();
+            hashCode = hashCode * -1521134295 + c.GetHashCode();
+            hashCode = hashCode * -1521134295 + isGlobal.GetHashCode();
+            return hashCode;
+        }
+        public static bool operator== (Hex h1, Hex h2)
+        {
+            return h1.Equals(h2);
+        }
+        public static bool operator!= (Hex h1, Hex h2)
+        {
+            return !(h1 == h2);
+        }
+
         public static Hex operator+ (Hex h1, Hex h2)
         {
             return new Hex(

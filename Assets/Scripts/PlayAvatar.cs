@@ -6,6 +6,7 @@ using MapSystem;
 using MapSystem.SpriteManager;
 using MapSystem.ResourceManager;
 using MapSystem.HexCoordinateSystem;
+using CharacterSystem;
 
 public class PlayAvatar : MonoBehaviour
 {
@@ -23,23 +24,28 @@ public class PlayAvatar : MonoBehaviour
 
     private MapData map;
 
-    private MapGenerator partyPosition;
+    private MapGenerator observer;
 
     // Start is called before the first frame update
     void Start()
     {
 
         map = new MapData(oneFloor, layerGround, layerOnGround, layerBlaind, new Tiling(Naming.DECORATETYPE.template));
-        partyPosition = new MapGenerator(new HexTile(map, 0, 0, 0), 8);
-        partyPosition.GenerateTileInit();
-        (partyPosition.generatedCenter + new Hex(4,2,0)).SetCharactor("Slime", "C");
-        (partyPosition.generatedCenter + new Hex(1,0,0)).SetCharactor("Cloud", "C");
-        (partyPosition.generatedCenter + new Hex(0,-3,0)).SetCharactor("EyeBall", "B");
-        (partyPosition.generatedCenter + new Hex(-2,3,0)).SetCharactor("Moth", "D");
-        (partyPosition.generatedCenter + new Hex(0,-2,2)).SetCharactor("Potion", "J");
-        (partyPosition.generatedCenter + new Hex(-2,0,3)).SetCharactor("WaterSmall", "A");
-        (partyPosition.generatedCenter + new Hex(2,4,0)).SetCharactor("Bug", "C");
-        
+        observer = new MapGenerator(new HexTile(map, 0, 0, 0), 8);
+        observer.GenerateTileInit();
+        observer.generatedCenter.Clone();
+        CharacterManager.Init(observer.generatedCenter.Clone());
+        new Character(CharacterManager.playable, "Moth", "C");
+
+        new Character(new Hex( 4, 2, 0), "Slime", "C");
+        new Character(new Hex( 0,-3, 0), "EyeBall", "B");
+        new Character(new Hex(-2, 3, 0), "Moth", "D");
+        new Character(new Hex( 0,-2, 2), "Potion", "J");
+        new Character(new Hex(-2, 0, 3), "WaterSmall", "A");
+        new Character(new Hex( 2, 4, 0), "Bug", "C");
+
+        CharacterManager.playable.members[CharacterManager.playable.pReaderId].ani.Inverse();
+
 
     }
 

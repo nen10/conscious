@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Object;
 using UnityEngine.Tilemaps;
 using MapSystem.HexCoordinateSystem;
 using gen = MapSystem.HexCoordinateSystem.HexGenerator;
@@ -29,60 +28,130 @@ namespace MapSystem.SpriteManager
             this.til = til;
         }
 
-        public HexTile HexTile(Hex h)
-        {
-            return new HexTile(this, h);
-        }
         public static string GetTileName(TileBase t)
         {
             return t == null ? "" : t.name;
         }
-        public static string GetTileName(Tilemap tm, HexTile h)
+        public static string GetTileName(Tilemap tm, HexSprite h)
         {
             return GetTileName(tm.GetTile((Vector3Int)h));
         }
-        public static bool isNull(Tilemap tm, HexTile h)
+        public static bool isNull(Tilemap tm, HexSprite h)
         {
             return tm.GetTile((Vector3Int)h) != null;
         }
 
-        public bool hasGround(HexTile h)
+        public bool hasGround(HexSprite h)
         {
             return ! isNull(layerGround, h);
         }
-        public string GetGroundTileName(HexTile h)
+        public string GetGroundTileName(HexSprite h)
         {
             return GetTileName(layerGround, h);
         }
 
-        public bool hasWall(HexTile h)
+        public bool hasWall(HexSprite h)
         {
             return til.GetTileNameGroundWall() == GetTileName(layerGround,h);
         }
     }
 
-    public class HexTile : Hex
+    public class HexSprite : Hex
     {
-        private MapData map;
+        protected MapData map;
         public Tiling til { get { return this.map.til; } }
-        public HexTile(MapData map, int a, int b, int c)
+        public static readonly Vector3 CENTERING_PIXEL_MOBS = new Vector3(0,0.07f,0);
+        public HexSprite(MapData map, int a, int b, int c)
          : base(a, b, c, true)
         {
             this.map = map;
         }
-        public HexTile(MapData map, Hex h)
+        public HexSprite(MapData map, Hex h)
          : base(h.a, 0, h.c, h.isGlobal)
         {
             this.map = h.isGlobal ? map : null;
         }
-
         public Vector3Int unityYXZHex
         {
-            get { return HexCoordinateSystem.Transform.Z3Hex2UnityYXZHex(this); }
+            get { return HexCoordinateSystem.MathHex.Z3Hex2UnityYXZHex(this); }
         }
         public Vector3 unityXYZ
         {
             get { return this.map.oneFloor.CellToWorld((Vector3Int)this); }
+        }
+        public Vector3 positonWorldPixelMobs()
+        {
+            return this.unityXYZ + CENTERING_PIXEL_MOBS;
+        }
+        public static explicit operator Vector3Int(HexSprite h)
+        {
+            return h.unityYXZHex;
+        }
+        public static explicit operator Vector3(HexSprite h)
+        {
+            return h.unityXYZ;
+        }
+
+        public static HexSprite operator +(HexSprite h1, Hex h2)
+        {
+            return new HexSprite(h1.map, (Hex)h1 + h2);
+        }
+
+        public static HexSprite operator -(HexSprite h1, Hex h2)
+        {
+            return new HexSprite(h1.map, (Hex)h1 - h2);
+        }
+
+        public static HexSprite operator *(HexSprite h, int n)
+        {
+            return new HexSprite(h.map, (Hex)h * n);
+        }
+        public static HexSprite operator -(HexSprite h)
+        {
+            return h * -1;
+        }
+
+        public bool hasWall(HexUnit h)
+        {
+            return this.map.hasWall(this + h);
+        }
+        public bool hasWall()
+        {
+            return this.map.hasWall(this);
+        }
+        public string groundName
+        {
+            get { return this.map.GetGroundTileName(this); }
+        }
+        // public bool CameCharacterOnGround()
+        // {
+        //     if ((this).hasWall()) { return false; }
+        //     map.layerGround.SetTile((Vector3Int)(this), Resources.Load<Tile>(til.GetTilePathGround((int)Naming.GROUNDTYPE.wall)));
+        //     return true;
+        // }
+        // public void LeaveCharacterFromGround()
+        // {
+        //     map.layerGround.SetTile((Vector3Int)(this), Resources.Load<Tile>(til.GetTilePathGround((int)Naming.GROUNDTYPE.wall)));
+        // }
+        public void SetGridAsParent(GameObject ch)
+        {
+            ch.transform.SetParent(map.oneFloor.transform);
+        }
+        public HexSprite Clone()
+        {
+            return (HexSprite)MemberwiseClone();
+        }
+
+    }
+    public class HexTile : HexSprite
+    {
+        public HexTile(MapData map, int a, int b, int c)
+         : base(map, a, b, c)
+        {
+        }
+        public HexTile(MapData map, Hex h)
+         : base(map, h)
+        {
         }
 
         public static HexTile operator +(HexTile h1, Hex h2)
@@ -104,28 +173,6 @@ namespace MapSystem.SpriteManager
             return h * -1;
         }
 
-        public static explicit operator Vector3Int(HexTile h)
-        {
-            return h.unityYXZHex;
-        }
-
-        public static explicit operator Vector3(HexTile h)
-        {
-            return h.unityXYZ;
-        }
-
-        public bool hasWall(HexUnit h)
-        {
-            return this.map.hasWall(this + h);
-        }
-        public bool hasWall()
-        {
-            return this.map.hasWall(this);
-        }
-        public string groundName
-        {
-            get { return this.map.GetGroundTileName(this); }
-        }
 
         public void SetTileGroundInit(Hex h)
         {
@@ -209,13 +256,6 @@ namespace MapSystem.SpriteManager
                 case 0: return 5f;
                 default: return 8f;
             }
-        }
-
-        public void SetCharactor(string raceName, string skin = "")
-        {
-            GameObject origin = (GameObject)Resources.Load("Character/Prehub/" + raceName + skin);
-            GameObject ch = Instantiate(origin, (Vector3)this + new Vector3(0,0.07f,0), Quaternion.identity);
-            ch.transform.SetParent(map.oneFloor.transform);
         }
     }
 }

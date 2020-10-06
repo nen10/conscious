@@ -17,7 +17,6 @@ public class AnimationController : MonoBehaviour
     public void Begin()
 	{
         ContinueIdlingWalk();
-        Inverse();
     }
 	public void Inverse()
 	{
