@@ -492,19 +492,19 @@ namespace CharacterSystem.StatusParameter
             this.SIG = SIG;
         }
     }
-    public class IdentifierCharactor : Identifier
+    public class IdentifierCharacter : Identifier
     {
         public string name;
         public growparam.characteristic role;
 
-        public IdentifierCharactor(string classname, string name, growparam.characteristic role)
+        public IdentifierCharacter(string classname, string name, growparam.characteristic role)
          : base(classname)
         {
             this.name = name;
             this.role = role;
         }
     }
-    public class StatusCharactor : IdentifierCharactor
+    public class StatusCharacter : IdentifierCharacter
     {
         public StatusEquip equip;
         public ParamSkillLevels skillLVsSocial;
@@ -513,7 +513,7 @@ namespace CharacterSystem.StatusParameter
         public MOV MOV;
         public CP CP;
         public DEX DEX;
-        public StatusCharactor(
+        public StatusCharacter(
             string classname,
             string name,
             int role,
@@ -543,10 +543,10 @@ namespace CharacterSystem.StatusParameter
 
     public class IdentifierParty : Identifier
     {
-        public List<StatusCharactor> members;
+        public List<StatusCharacter> members;
         public int[] memberIds;
 
-        public IdentifierParty(string classname, List<StatusCharactor> m, int[] ids)
+        public IdentifierParty(string classname, List<StatusCharacter> m, int[] ids)
          : base(classname)
         {
             members = m;
@@ -566,7 +566,7 @@ namespace CharacterSystem.StatusParameter
         public List<IdentifierEquip> items;
         public StatusParty(
             string classname,
-            List<StatusCharactor> members,
+            List<StatusCharacter> members,
             int[] ids,
             ParamSkillLevels physical,
             int lvr = 0,

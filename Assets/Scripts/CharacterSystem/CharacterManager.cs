@@ -8,6 +8,7 @@ using MapSystem.HexCoordinateSystem;
 using System.Linq;
 using UnityEditor;
 using UnityEditorInternal;
+using CharacterSystem.StatusParameter;
 
 namespace CharacterSystem
 {
@@ -21,6 +22,7 @@ namespace CharacterSystem
         }
         public static Party playable;
         public static List<Party> nonPlayer;
+        public static Dictionary<HexSprite, Character> Hex2Char;
 
         public static void Init(HexSprite p)
         {

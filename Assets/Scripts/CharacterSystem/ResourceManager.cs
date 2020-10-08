@@ -104,9 +104,9 @@ namespace CharacterSystem.ResourceManager
             public float RNGmax;
             public float SIGmin;
             public float SIGmax;
-            public StatusCharactor make(string name)
+            public StatusCharacter make(string name)
             {
-                return new StatusCharactor(
+                return new StatusCharacter(
                     race,
                     name,
                     role,
@@ -135,7 +135,7 @@ namespace CharacterSystem.ResourceManager
             public int lvc = 0;
             public StatusParty make(int[] memberIds)
             {
-                List<StatusCharactor> m = new List<StatusCharactor>();
+                List<StatusCharacter> m = new List<StatusCharacter>();
                 foreach (int id in memberIds)
                 {
                     m.Add(JsonManager.JsonRoadCharactor(members[id]).make(members[id]));

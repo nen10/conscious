@@ -20,13 +20,9 @@ namespace MapSystem.ResourceManager
         {
             return Naming.GetTilePathWall(deco, h);
         }
-        public string GetTilePathBlaind(int blaindId)
+        public string GetTilePathBlaind(int blaindId = 0)
         {
             return Naming.GetTilePathBlaind(deco, blaindId);
-        }
-        public string GetTilePathGround(int value)
-        {
-            return GetTilePathGround((Naming.GROUNDTYPE)value);
         }
         public string GetTilePathGround(Naming.GROUNDTYPE value)
         {

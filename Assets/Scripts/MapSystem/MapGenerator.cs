@@ -16,11 +16,24 @@ namespace MapSystem
         public HexTile generatedCenter;
         public int generatedRadius;
         public int sightRadius;
+        public Tiling til;
+        public MapData map;
 
 
         public MapGenerator(HexTile center, int sightRadius, int r = 0)
         {
             this.generatedCenter = center;
+            this.generatedRadius = r;
+            this.sightRadius = sightRadius;
+            this.til = generatedCenter.til;
+            this.map = generatedCenter.map;
+        }
+
+        public MapGenerator(MapData map, int sightRadius, int r = 0)
+        {
+            this.map = map;
+            this.til = map.til;
+            this.generatedCenter = new HexTile(map, 0, 0, 0);
             this.generatedRadius = r;
             this.sightRadius = sightRadius;
         }
@@ -34,19 +47,19 @@ namespace MapSystem
         {
             foreach(Hex h in gen.refractEmission(r, u, rot1, new List<Hex>(){}))
             {
-                ht.SetTileGround(h, gen.unitRotate(u, rot2));
+                (ht + h).SetTileGround(gen.unitRotate(u, rot2));
             }
         }
         public static void SetTileGroundInductive(HexTile ht, int r, gen.unit u, int rot1, Tile t)
         {
             foreach(Hex h in gen.refractEmission(r, u, rot1, new List<Hex>(){}))
             {
-                ht.SetTileGround(h, t);
+                (ht + h).SetTileGround(t);
             }
         }
         public void SetTileGroundHorizon(gen.unit step)
         {
-            generatedCenter.SetTileGroundInit(gen.liner(step, generatedRadius));
+            (generatedCenter + gen.liner(step, generatedRadius)).SetTileGroundInit();
             SetTileGroundInductive(step, 2, 4);
             SetTileGroundInductive(step, 4, 2);
         }
@@ -67,14 +80,14 @@ namespace MapSystem
             }
             foreach(gen.unit u in endPoints)
             {
-                generatedCenter.SetTileGround(gen.liner(u, generatedRadius), gen.unitRotate(u, 3));
+                (generatedCenter +　gen.liner(u, generatedRadius)).SetTileGround(gen.unitRotate(u, 3));
             }
         }
         public void SetTileGroundCircle(int r)
         {
             if(generatedRadius == 0)
             {
-                generatedCenter.SetTileGroundInit(gen.O);
+                generatedCenter.SetTileGroundInit();
             }
             while(generatedRadius < r)
             {
@@ -86,13 +99,17 @@ namespace MapSystem
         public void SetTileOverGround(HexTile ht, int minRadius)
         {
             Func<bool, string, Tile> gt = (bool b, string s) => { return b ? null : Resources.Load<Tile>(s); };
+            bool properSet = false;
             for (int r = minRadius; r <= generatedRadius; r++)
             {
                 int count = 0;
                 foreach(Hex h in gen.L1CircleAllEdgePoints(r, new List<Hex>(){}))
                 {
-                    ht.SetTileBlaind(h, gt(r < sightRadius, r == sightRadius ? ht.GetTilePathBlaind(r, count): ht.GetTilePathBlaind()));
-                    ht.SetTileWall(h, gt(r > sightRadius, (ht + h).GetTilePathWall()));
+                    HexTile genH = ht + h;
+                    properSet = genH.SetTileBlaind(gt(r < sightRadius, til.GetTilePathBlaind(r == sightRadius ? blaindId(r, count) : 0)));
+                    properSet |= genH.SetTileWall(gt(r > sightRadius || !(genH).hasWall(), til.GetTilePathWall(genH)));
+
+                    map.Hex2MoveCost.Add(genH, properSet ? MapData.MOVECOST_BLOCKED : MapData.MOVECOST_EMPTY);
                     count++;
                 }
             }
@@ -104,7 +121,7 @@ namespace MapSystem
             gen.unit d = u.d;
             gen.unit bd = gen.unitRotate(d, 3);
 
-            nextCenter.SetTileGroundInit(gen.liner(d, generatedRadius));
+            (nextCenter + gen.liner(d, generatedRadius)).SetTileGroundInit();
 
             SetTileGroundInductive(nextCenter,generatedRadius,d, 2, 4);
             SetTileGroundInductive(nextCenter,generatedRadius,d, 4, 2);
@@ -155,6 +172,15 @@ namespace MapSystem
         }
         
         
+        public static int blaindId(int sightRadius, int count)
+        {
+            return ((count % sightRadius) == 0 ? 1 : 2) + ((int)(count / sightRadius) * 2);
+        }
+
+        public string GenerateTileNameGroundNotWalled()
+        {
+            return til.GetTilePathGround(Naming.GROUNDTYPE.a);
+        }
     }
 
 }

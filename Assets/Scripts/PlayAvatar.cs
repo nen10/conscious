@@ -31,7 +31,7 @@ public class PlayAvatar : MonoBehaviour
     {
 
         map = new MapData(oneFloor, layerGround, layerOnGround, layerBlaind, new Tiling(Naming.DECORATETYPE.template));
-        observer = new MapGenerator(new HexTile(map, 0, 0, 0), 8);
+        observer = new MapGenerator(map, 8);
         observer.GenerateTileInit();
         observer.generatedCenter.Clone();
         CharacterManager.Init(observer.generatedCenter.Clone());
