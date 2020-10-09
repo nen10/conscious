@@ -45,8 +45,6 @@ public class PlayAvatar : MonoBehaviour
         new Character(new Hex( 2, 4, 0), "Bug", "C");
 
         CharacterManager.playable.members[CharacterManager.playable.pReaderId].ani.Inverse();
-
-
     }
 
     // Update is called once per frame

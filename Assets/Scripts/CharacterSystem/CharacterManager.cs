@@ -28,6 +28,15 @@ namespace CharacterSystem
         {
             playable = new Party(CharacterManager.FACTION.player, p);
             nonPlayer = new List<Party>(){ };
+            Hex2Char = new Dictionary<HexSprite, Character>() { };
+        }
+        public static void SetHex2Char()
+        {
+            playable.SetHex2Char();
+            foreach(Party p in nonPlayer)
+            {
+                p.SetHex2Char();
+            }
         }
         public static void GenParty(Party p)
         {
@@ -139,7 +148,7 @@ namespace CharacterSystem
                 m.posRel = this.rut[m.posParty];
                 m.AppearToMap();
             }
-            this.mode = MODE.social;
+            SetMode(MODE.social);
             // BGM変更
         }
         public void ModeS2P(int controllMemderId)
@@ -160,8 +169,46 @@ namespace CharacterSystem
                     m.isPReader = false;
                 }
             }
-            this.mode = MODE.physical;
+            SetMode(MODE.physical);
             // BGM変更
+        }
+
+
+        public void SetMode(MODE m)
+        {
+            RemoveHex2Char();
+            this.mode = m;
+            SetHex2Char();
+        }
+        public void SetHex2Char()
+        {
+            if(this.mode == MODE.physical)
+            {
+                this.members[this.pReaderId].SetHex2Char();
+            }
+            else
+            {
+                foreach(Character ch in this.members)
+                {
+                    ch.SetHex2Char();
+                }
+
+            }
+        }
+        public void RemoveHex2Char()
+        {
+            if(this.mode == MODE.physical)
+            {
+                CharacterManager.Hex2Char.Remove(this.pos);
+            }
+            else
+            {
+                foreach(Character ch in this.members)
+                {
+                    ch.RemoveHex2Char();
+                }
+
+            }
         }
     }
 
@@ -276,6 +323,15 @@ namespace CharacterSystem
                 this.home.members[0].isPReader |= this.isPReader;
                 this.home.ChangeFormationByLeave();
             }
+        }
+
+        public void SetHex2Char()
+        {
+            CharacterManager.Hex2Char.Add(this.home.pos + this.posRel, this);
+        }
+        public void RemoveHex2Char()
+        {
+            CharacterManager.Hex2Char.Remove(this.home.pos + this.posRel);
         }
 
     }

@@ -47,3 +47,13 @@ The following packages were updated:
   com.unity.2d.animation from version 3.2.2 to 3.2.4
   com.unity.2d.psdimporter from version 2.1.4 to 2.1.5
   com.unity.2d.spriteshape from version 3.0.11 to 3.0.13
+
+=== Fri Oct  9 17:17:11 2020
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were 更新済:
+  com.unity.2d.animation をバージョン 3.2.4 から 3.2.5 へ
+  com.unity.2d.psdimporter をバージョン 2.1.5 から 2.1.6 へ
+  com.unity.2d.spriteshape をバージョン 3.0.13 から 3.0.14 へ

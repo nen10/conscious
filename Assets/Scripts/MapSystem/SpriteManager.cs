@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static UnityEngine.Mathf;
 using MapSystem.HexCoordinateSystem;
 using gen = MapSystem.HexCoordinateSystem.HexGenerator;
 using MapSystem.ResourceManager;
+using CharacterSystem;
+using UnityEditor;
+using UnityEngine.SocialPlatforms;
+using System.ComponentModel.Design.Serialization;
+using System.Linq;
 
 namespace MapSystem.SpriteManager 
 {
@@ -19,10 +25,10 @@ namespace MapSystem.SpriteManager
         public UnityEngine.Transform a;
         public Tiling til;
 
-        public Dictionary<HexTile, float> Hex2MoveCost;
-        public static readonly float MOVECOST_EMPTY = 1f;
-        public static readonly float MOVECOST_THROUGH = 2f;
-        public static readonly float MOVECOST_BLOCKED = 65535f;
+        public Dictionary<HexSprite, int> Hex2MoveCost;
+        public static readonly int MOVECOST_EMPTY = 1;
+        public static readonly int MOVECOST_EXIST_CHARACTER = 2;
+        public static readonly int MOVECOST_BLOCKED = 65535;
         public MapData(Grid floor, Tilemap ground, Tilemap onGround, Tilemap blaind, Tiling til)
         {
             this.oneFloor = floor;
@@ -30,7 +36,7 @@ namespace MapSystem.SpriteManager
             this.layerOnGround = onGround;
             this.layerBlaind = blaind;
             this.til = til;
-            this.Hex2MoveCost = new Dictionary<HexTile, float>() { };
+            this.Hex2MoveCost = new Dictionary<HexSprite, int>() { };
         }
 
         public static string GetTileName(TileBase t)
@@ -58,6 +64,166 @@ namespace MapSystem.SpriteManager
         public bool hasWall(HexSprite h)
         {
             return til.GetTileNameGroundWall() == GetTileName(layerGround,h);
+        }
+
+        public int GetMoveCost(HexSprite h)
+        {
+            return Hex2MoveCost[h] + (CharacterManager.Hex2Char.ContainsKey(h) ? MOVECOST_EXIST_CHARACTER : 0);
+        }
+        public Dictionary<HexSprite, (int, List<HexUnit>)> GetMinPath(
+            HexSprite s,
+            HexSprite e,
+            int moveRange
+            )
+        {
+            Dictionary<HexSprite, (int, List<HexUnit>)> minCostPath = new Dictionary<HexSprite, (int, List<HexUnit>)>() { };
+            minCostPath[s] = (0, new List<HexUnit>() { });
+            DeeperSightRecurcive(
+                e, moveRange, minCostPath,
+                DeeperSight(s, e, moveRange, minCostPath)
+            );
+            return minCostPath;
+        }
+
+        public Dictionary<HexSprite, (int, List<HexUnit>)> GetMinPaths(
+            HexSprite s,
+            int moveRange
+            )
+        {
+            Dictionary<HexSprite, (int, List<HexUnit>)> minCostPath = new Dictionary<HexSprite, (int, List<HexUnit>)>() { };
+            minCostPath[s] = (0, new List<HexUnit>() {});
+            FlatSightRecurcive(
+                s, moveRange, minCostPath, 
+                FlatSight(s, s, moveRange, minCostPath)
+            );
+            return minCostPath;
+        }
+        public void DeeperSightRecurcive(
+            HexSprite e,
+            int moveRange,
+            Dictionary<HexSprite, (int, List<HexUnit>)> minCostPath,
+            int priority, // Hex.L1Distance(e, s)
+            Dictionary<int, List<HexSprite>> lookDeeper
+            )
+        {
+            for (int i = 0; i <= moveRange - priority; i++)
+            {
+                int p = priority + i;
+                if (lookDeeper.ContainsKey(p))
+                {
+                    foreach(HexSprite h in lookDeeper[p])
+                    {
+                        // 既知のpathの move cost が
+                        // p(=現在地点 l を経由して e に到達するときの最小の move cost)以下なら、
+                        // 別の経路を探索する必要はない
+                        if(minCostPath.ContainsKey(e) && minCostPath[e].Item1 <= p) return;
+
+                        DeeperSightRecurcive(
+                            e, moveRange, minCostPath, p,
+                            DeeperSight(h, e, moveRange, minCostPath));
+                    }
+                }
+            }
+        }
+
+        public void DeeperSightRecurcive(
+            HexSprite e,
+            int moveRange,
+            Dictionary<HexSprite, (int, List<HexUnit>)> minCostPath,
+            Dictionary<int, List<HexSprite>> lookDeeper
+            )
+        {
+            Dictionary<int, List<HexSprite>> l = new Dictionary<int, List<HexSprite>>() { };
+            foreach (KeyValuePair<int, List<HexSprite>> i in lookDeeper)
+            {
+                foreach (HexSprite h in i.Value)
+                {
+                    if(minCostPath.ContainsKey(h) && minCostPath[h].Item1 < i.Key) continue;
+                    foreach (KeyValuePair<int, List<HexSprite>> item in DeeperSight(h, e, moveRange, minCostPath))
+                    {
+                        if(!l.ContainsKey(item.Key)) l[item.Key] = new List<HexSprite>() { };
+                        l[item.Key].AddRange(item.Value);
+                    }
+                }
+            }
+            DeeperSightRecurcive(e, moveRange, minCostPath, l);
+        }
+        public void FlatSightRecurcive(
+            HexSprite s,
+            int moveRange,
+            Dictionary<HexSprite, (int, List<HexUnit>)> minCostPath,
+            Dictionary<int, List<HexSprite>> lookFlat
+            )
+        {
+            Dictionary<int, List<HexSprite>> l = new Dictionary<int, List<HexSprite>>() { };
+            foreach (KeyValuePair<int, List<HexSprite>> i in lookFlat)
+            {
+                foreach (HexSprite h in i.Value)
+                {
+                    if(minCostPath.ContainsKey(h) && minCostPath[h].Item1 < i.Key) continue;
+                    foreach (KeyValuePair<int, List<HexSprite>> item in FlatSight(s, h, moveRange, minCostPath))
+                    {
+                        if(!l.ContainsKey(item.Key)) l[item.Key] = new List<HexSprite>() { };
+                        l[item.Key].AddRange(item.Value);
+                    }
+                }
+            }
+            FlatSightRecurcive(s, moveRange, minCostPath, l);
+        }
+        public Dictionary<int, List<HexSprite>> DeeperSight(
+            HexSprite s,
+            HexSprite e,
+            int moveRange,
+            Dictionary<HexSprite, (int, List<HexUnit>)> minCostPath
+            )
+        {
+            Dictionary<int, List<HexSprite>> lookDeeper = new Dictionary<int, List<HexSprite>>() { };
+            foreach(HexUnit u in gen.unit2Hex.Values)
+            {
+                HexSprite h = s + u;
+                // マップ情報による判断
+                int c = minCostPath[s].Item1 + GetMoveCost(h);
+                int d = Hex.L1Distance(e, h);
+
+                // 現在地点 h に至る既知のpathの move cost が
+                // 現在のmove cost以下なら、すでにその地点の周りは探索しはじめている
+                if(minCostPath.ContainsKey(h) && minCostPath[h].Item1 <= c) continue;
+                if(moveRange < c) continue; //深掘りしない
+                List<HexUnit> np = new List<HexUnit>(minCostPath[s].Item2);
+                np.Add(u);
+                minCostPath[h] = (c, np);
+                if(moveRange < d + c) continue; //深掘りしない
+                if(!lookDeeper.ContainsKey(c)) lookDeeper[c] = new List<HexSprite>() { };
+                lookDeeper[c].Add(h);
+            }
+            return lookDeeper;
+        }
+        public Dictionary<int, List<HexSprite>> FlatSight(
+            HexSprite s,
+            HexSprite e,
+            int moveRange,
+            Dictionary<HexSprite, (int, List<HexUnit>)> minCostPath
+            )
+        {
+            Dictionary<int, List<HexSprite>> lookFlat = new Dictionary<int, List<HexSprite>>() { };
+            foreach(HexUnit u in gen.unit2Hex.Values)
+            {
+                HexSprite h = e + u;
+                // マップ情報による判断
+                int c = minCostPath[e].Item1 + GetMoveCost(h);
+                int d = Hex.L1Distance(h, s);
+
+                // 現在地点 h に至る既知のpathの move cost が
+                // 現在のmove cost以下なら、すでにその地点の周りは探索しはじめている
+                if(minCostPath.ContainsKey(h) && minCostPath[h].Item1 <= c) continue;
+                if(moveRange < c ) continue;
+                List<HexUnit> np = new List<HexUnit>(minCostPath[e].Item2);
+                np.Add(u);
+                minCostPath[h] = (c, np);
+                if(!lookFlat.ContainsKey(c)) lookFlat[c] = new List<HexSprite>() { };
+                lookFlat[c].Add(h);
+            }
+            return lookFlat;
         }
     }
 

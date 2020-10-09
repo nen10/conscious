@@ -140,6 +140,10 @@ namespace MapSystem.HexCoordinateSystem
         {
             return (new HexReduct(this)).ResolveHex();
         }
+        public static int L1Distance(Hex h1, Hex h2)
+        {
+            return (h1 - h2).norm;
+        }
 
     }
     public class HexUnit : Hex
