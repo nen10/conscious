@@ -20,6 +20,13 @@ namespace CharacterSystem
             enemy,
             civil,
         }
+        public enum ControlMode
+        {
+            nonPlayer = -1,
+            integrate,
+            body,
+            mind,
+        }
         public static Party playable;
         public static List<Party> nonPlayer;
         public static Dictionary<HexSprite, Character> Hex2Char;
@@ -215,15 +222,19 @@ namespace CharacterSystem
     public class Character
     {
         public Hex posRel;
-        public Party home;
+        public Party community;
+        public HexSprite pos {get { return community.pos + posRel; } }
         public int posParty;
         public bool isPReader;
         public CharacterManager.FACTION faction;
-        public GameObject instancePrehub;
+        public GameObject prehubVisual;
+        public GameObject prehubPointer;
         public AnimationController ani;
+        public StatusCharacter status;
+        public Dictionary<HexSprite, (int, List<HexUnit>)> accessibleArea;
         public Vector3 GetWorldPosition()
         {
-            return (this.home.pos + posRel).positonWorldPixelMobs();
+            return (this.pos).positonWorldPixelMobs();
         }
         public Character(
             Party party,
@@ -267,43 +278,42 @@ namespace CharacterSystem
         }
         public void Init(Party p, string raceName, string skin)
         {
-            this.home = p;
+            this.community = p;
             this.JoinParty();
-            this.shapeInit(raceName, skin);
+            this.InitShape(raceName, skin);
 
-        }
-        public void JoinParty(Party nextP)
-        {
-            this.LeaveParty();
-            this.posRel = this.home.pos + this.posRel - nextP.pos;
-            this.home = nextP;
-            this.JoinParty();
         }
         public void JoinParty()
         {
-            this.home.members.Add(this);
-            this.posParty = this.home.members.Count - 1;
+            this.community.members.Add(this);
+            this.posParty = this.community.members.Count - 1;
             this.isPReader = (this.posParty == 0);
-            this.faction = this.home.faction;
+            this.faction = this.community.faction;
         }
-        public void shapeInit(string raceName, string skin = "")
+        public void InitShape(string raceName, string skin = "")
         {
             GameObject origin = (GameObject)Resources.Load("Character/Prehub/" + raceName + skin);
-            this.instancePrehub = Instantiate(origin, this.GetWorldPosition(), Quaternion.identity);
-            this.home.pos.SetGridAsParent(instancePrehub);
-            this.ani = instancePrehub.GetComponent<AnimationController>();
-            this.instancePrehub.SetActive(this.isPReader || this.home.mode != Party.MODE.physical);
+            this.prehubVisual = Instantiate(origin, this.GetWorldPosition(), Quaternion.identity);
+            this.community.pos.SetGridAsParent(prehubVisual);
+            this.ani = prehubVisual.GetComponent<AnimationController>();
+            this.prehubVisual.SetActive(this.isPReader || this.community.mode != Party.MODE.physical);
         }
+        public void InitByTurn()
+        {
+            this.status.MOV.c = this.status.MOV.m;
+            this.accessibleArea = this.pos.GetMinPaths((int)this.status.MOV.c);
+        }
+
         public void HideFromMap(float timeFade = 0f)
         {
             // posRel = HexGenerator.O;
             // fade out
-            this.instancePrehub.SetActive(false);
+            this.prehubVisual.SetActive(false);
         }
         public void AppearToMap(float timeFade = 0f)
         {
-            this.instancePrehub.SetActive(true);
-            this.instancePrehub.transform.SetPositionAndRotation(this.GetWorldPosition(), Quaternion.identity);
+            this.prehubVisual.SetActive(true);
+            this.prehubVisual.transform.SetPositionAndRotation(this.GetWorldPosition(), Quaternion.identity);
             // fade in
         }
         public void Move(Hex h)
@@ -311,29 +321,217 @@ namespace CharacterSystem
             this.posRel += h;
             // animation
         }
-        public void LeaveParty()
+        public void LeaveParty(Party nextP)
         {
-            this.home.members.RemoveAt(posParty);
-            if(this.home.members.Count == 0)
+            this.community.members.RemoveAt(posParty);
+            if(this.community.members.Count == 0)
             {
-                CharacterManager.RemoveParty(this.home);
+                CharacterManager.RemoveParty(this.community);
             }
             else 
             {
-                this.home.members[0].isPReader |= this.isPReader;
-                this.home.ChangeFormationByLeave();
+                this.community.members[0].isPReader |= this.isPReader;
+                this.community.ChangeFormationByLeave();
             }
+            this.posRel = this.pos - nextP.pos;
+            this.community = nextP;
+            this.JoinParty();
         }
 
         public void SetHex2Char()
         {
-            CharacterManager.Hex2Char.Add(this.home.pos + this.posRel, this);
+            CharacterManager.Hex2Char.Add(this.pos, this);
         }
         public void RemoveHex2Char()
         {
-            CharacterManager.Hex2Char.Remove(this.home.pos + this.posRel);
+            CharacterManager.Hex2Char.Remove(this.pos);
         }
 
-    }
-    
+        public void SetPointer(string pointer)
+        {
+            GameObject origin = (GameObject)Resources.Load("Pointer/" + pointer);
+            this.prehubPointer = Instantiate(origin, this.pos.positonWorldPointer(), Quaternion.identity);
+            this.community.pos.SetGridAsParent(prehubPointer);
+        }
+        public void RemovePointer(float time = 0f)
+        {
+            if (!(this.prehubPointer is null))
+            {
+                Destroy(this.prehubPointer, time);
+            }
+            this.prehubPointer = null;
+        }
+        public void SwitchPointer(string pointer)
+        {
+            RemovePointer();
+            SetPointer(pointer);
+        }
+        public bool AttentionBody(HexSprite h)
+        {
+            switch(this.community.mode)
+            {
+                case Party.MODE.physical: return PlayPhysicalBody(h);
+                case Party.MODE.social: return PlaySocialBody(h);
+                case Party.MODE.existential: return PlaySocialBody(h);
+            }
+            return false;
+        }
+        public bool AttentionMind(HexSprite h)
+        {
+            switch(this.community.mode)
+            {
+                case Party.MODE.physical: return PlayPhysicalMind(h);
+                case Party.MODE.social: return PlaySocialMind(h);
+                case Party.MODE.existential: return PlaySocialMind(h);
+            }
+            return false;
+        }
+        public bool PlayPhysicalBody(HexSprite h)
+        {
+            int d = Hex.L1Distance(h, this.pos);
+            if(d == 0)
+                return ConsiousDive(h);
+            if(CharacterManager.Hex2Char.ContainsKey(h))
+            {
+                Character target = CharacterManager.Hex2Char[h];
+                if(d == 1)
+                    return ConsiousTalking(target, h);
+                return ConsiousApport(target, h);
+            }
+            if (h.hasWall())
+                return ConsiousBrakeWall(h);
+            if(accessibleArea.ContainsKey(h))
+                return ConsiousStepping(h);
+            return ConsiousTeleport(h);
+        }
+        public bool PlayPhysicalMind(HexSprite h)
+        {
+            int d = Hex.L1Distance(h, this.pos);
+            if(d == 0)
+                return ConsiousMeditation(h);
+            return ConsiousWatching(h);
+        }
+        public bool PlaySocialBody(HexSprite h)
+        {
+            int d = Hex.L1Distance(h, this.pos);
+            if(d == 0)
+                return ConsiousDeparture(h);
+            if(CharacterManager.Hex2Char.ContainsKey(h))
+            {
+                Character target = CharacterManager.Hex2Char[h];
+                if(d == 1)
+                    return ConsiousTalking(target, h);
+                return ConsiousApport(target, h);
+            }
+            if (h.hasWall())
+                return ConsiousBrakeWall(h);
+            if(accessibleArea.ContainsKey(h))
+                return ConsiousWalking(h);
+            return ConsiousTeleport(h);
+        }
+        public bool PlaySocialMind(HexSprite h)
+        {
+            if(!CharacterManager.Hex2Char.ContainsKey(h))
+                return Consious2space(h);
+            Character target = CharacterManager.Hex2Char[h];
+            if(this.community != target.community)
+                return Consious2inoperate(target, h);
+            if(this != target)
+                return Consious2operate(target, h);
+            return Consious2self(target, h);
+        }
+        public bool Consious2space(HexSprite h)
+        {
+            return false;
+            // TODO: write friendship skill
+        }
+        public bool Consious2inoperate(Character ch, HexSprite h)
+        {
+            return false;
+            // TODO: write hostile skill
+        }
+        public bool Consious2operate(Character ch, HexSprite h)
+        {
+            return false;
+            // TODO: write mercy skill
+        }
+        public bool Consious2self(Character ch, HexSprite h)
+        {
+            return false;
+            // TODO: write insight skill
+        }
+
+        /*
+        public bool ConsiousFriendship(HexSprite h)
+        {
+        }
+        public bool ConsiousHostile(Character ch, HexSprite h)
+        {
+        }
+        public bool ConsiousMercy(Character ch, HexSprite h)
+        {
+        }
+        public bool ConsiousInsight(Character ch, HexSprite h)
+        {
+        }
+        */
+
+        public bool ConsiousDeparture(HexSprite h)
+        {
+            return false;
+            // TODO: write Departure process
+        }
+        public bool ConsiousDive(HexSprite h)
+        {
+            return false;
+            // TODO: write Dive process
+        }
+
+        public bool ConsiousTalking(Character ch, HexSprite h)
+        {
+            return false;
+            // TODO: write Talking process
+        }
+        public bool ConsiousBrakeWall(HexSprite h)
+        {
+            return false;
+            // TODO: write BrakeWall process
+        }
+        public bool ConsiousStepping(HexSprite h)
+        {
+            return false;
+            // TODO: write Stepping process
+        }
+        public bool ConsiousWalking(HexSprite h)
+        {
+            return false;
+            // TODO: write walking process
+        }
+        public bool ConsiousTeleport(HexSprite h)
+        {
+            return false;
+            // TODO: write teleport process
+        }
+        public bool ConsiousApport(Character ch, HexSprite h)
+        {
+            return false;
+            // TODO: write Apport process
+        }
+        public bool ConsiousMeditation(HexSprite h)
+        {
+            return false;
+            // TODO: write Meditation process
+        }
+        public bool ConsiousWatching(HexSprite h)
+        {
+            return false;
+            // TODO: write Watching process
+        }
+
+        public HexSprite ConsiousPhilosophicalZombie()
+        {
+            // TODO: write non-player AI 
+            return this.pos;
+        }
+    }    
 }

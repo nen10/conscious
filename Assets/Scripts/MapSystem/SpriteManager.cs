@@ -41,7 +41,7 @@ namespace MapSystem.SpriteManager
 
         public static string GetTileName(TileBase t)
         {
-            return t == null ? "" : t.name;
+            return t is null ? "" : t.name;
         }
         public static string GetTileName(Tilemap tm, HexSprite h)
         {
@@ -49,7 +49,7 @@ namespace MapSystem.SpriteManager
         }
         public static bool isNull(Tilemap tm, HexSprite h)
         {
-            return tm.GetTile((Vector3Int)h) != null;
+            return tm.GetTile((Vector3Int)h) is null;
         }
 
         public bool hasGround(HexSprite h)
@@ -231,7 +231,8 @@ namespace MapSystem.SpriteManager
     {
         public  MapData map;
         public Tiling til { get { return this.map.til; } }
-        public static readonly Vector3 CENTERING_PIXEL_MOBS = new Vector3(0,0.07f,0);
+        public static readonly Vector3 CENTERING_PIXEL_MOBS = new Vector3(0,0.07f,2);
+        public static readonly Vector3 CENTERING_POINTER = new Vector3(0,0,4);
         public HexSprite(MapData map, int a, int b, int c)
          : base(a, b, c, true)
         {
@@ -253,6 +254,10 @@ namespace MapSystem.SpriteManager
         public Vector3 positonWorldPixelMobs()
         {
             return this.unityXYZ + CENTERING_PIXEL_MOBS;
+        }
+        public Vector3 positonWorldPointer()
+        {
+            return this.unityXYZ + CENTERING_POINTER;
         }
         public static explicit operator Vector3Int(HexSprite h)
         {
@@ -312,6 +317,16 @@ namespace MapSystem.SpriteManager
         {
             return (HexSprite)MemberwiseClone();
         }
+        public Dictionary<HexSprite, (int, List<HexUnit>)> GetMinPath(HexSprite e, int moveRange)
+        {
+            return map.GetMinPath(this, e, moveRange);
+        }
+
+        public Dictionary<HexSprite, (int, List<HexUnit>)> GetMinPaths(int moveRange)
+        {
+
+            return map.GetMinPaths(this,moveRange);
+        }
 
     }
     public class HexTile : HexSprite
@@ -356,18 +371,17 @@ namespace MapSystem.SpriteManager
         public bool SetTileGround(Tile t)
         {
             this.map.layerGround.SetTile((Vector3Int)this, t);
-            return t == null;
+            return !(t is null);
         }
-
         public bool SetTileWall(Tile t)
         {
             map.layerOnGround.SetTile((Vector3Int)this, t);
-            return t == null;
+            return !(t is null);
         }
         public bool SetTileBlaind(Tile t)
         {
             map.layerBlaind.SetTile((Vector3Int)this, t);
-            return t == null;
+            return !(t is null);
         }
         
         public string GenerateTileNameGround(gen.unit generatePoint)

@@ -179,7 +179,7 @@ namespace CharacterSystem.StatusParameter
     // 成長に伴い値が自明でない変化をするパラメータ
     public class Param : ParamMeta
     {
-        public readonly float b; // base value
+        public readonly float b; // value @ LV.0
         public readonly float growrate;
         public Param(float v, float b, float g) : base(v) 
         {
@@ -582,7 +582,7 @@ namespace CharacterSystem.StatusParameter
             lv = new LVparty(playerLvg + lvg);
             lv = new LVparty(playerLvc + lvc);
 
-            this.items = items == null ? new List<IdentifierEquip>(){ } : items;
+            this.items = items is null ? new List<IdentifierEquip>(){ } : items;
         }
     }
 }
