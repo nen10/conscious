@@ -9,6 +9,8 @@ using System.Linq;
 using UnityEditor;
 using UnityEditorInternal;
 using CharacterSystem.StatusParameter;
+using System.Security.Cryptography;
+using System.Reflection;
 
 namespace CharacterSystem
 {
@@ -224,6 +226,7 @@ namespace CharacterSystem
         public Hex posRel;
         public Party community;
         public HexSprite pos {get { return community.pos + posRel; } }
+        public Vector3 posWorld {get { return (this.pos).positonWorldPixelMobs(); } }
         public int posParty;
         public bool isPReader;
         public CharacterManager.FACTION faction;
@@ -231,11 +234,7 @@ namespace CharacterSystem
         public GameObject prehubPointer;
         public AnimationController ani;
         public StatusCharacter status;
-        public Dictionary<HexSprite, (int, List<HexUnit>)> accessibleArea;
-        public Vector3 GetWorldPosition()
-        {
-            return (this.pos).positonWorldPixelMobs();
-        }
+        public Dictionary<HexSprite, (int, List<HexUnit>, HexSprite)> accessibleArea;
         public Character(
             Party party,
             string raceName,
@@ -293,10 +292,14 @@ namespace CharacterSystem
         public void InitShape(string raceName, string skin = "")
         {
             GameObject origin = (GameObject)Resources.Load("Character/Prehub/" + raceName + skin);
-            this.prehubVisual = Instantiate(origin, this.GetWorldPosition(), Quaternion.identity);
+            this.prehubVisual = Instantiate(origin, this.posWorld, Quaternion.identity);
             this.community.pos.SetGridAsParent(prehubVisual);
             this.ani = prehubVisual.GetComponent<AnimationController>();
+            this.ani.map = this.community.pos.map;
+            this.ani.status = this.status;
+            //this.ani.target = pos.positonWorldPixelMobs();
             this.prehubVisual.SetActive(this.isPReader || this.community.mode != Party.MODE.physical);
+
         }
         public void InitByTurn()
         {
@@ -313,13 +316,8 @@ namespace CharacterSystem
         public void AppearToMap(float timeFade = 0f)
         {
             this.prehubVisual.SetActive(true);
-            this.prehubVisual.transform.SetPositionAndRotation(this.GetWorldPosition(), Quaternion.identity);
+            this.prehubVisual.transform.SetPositionAndRotation(this.posWorld, Quaternion.identity);
             // fade in
-        }
-        public void Move(Hex h)
-        {
-            this.posRel += h;
-            // animation
         }
         public void LeaveParty(Party nextP)
         {
@@ -401,7 +399,7 @@ namespace CharacterSystem
             if (h.hasWall())
                 return ConsiousBrakeWall(h);
             if(accessibleArea.ContainsKey(h))
-                return ConsiousStepping(h);
+                return ConsiousMultiStep(h);
             return ConsiousTeleport(h);
         }
         public bool PlayPhysicalMind(HexSprite h)
@@ -497,16 +495,36 @@ namespace CharacterSystem
             return false;
             // TODO: write BrakeWall process
         }
-        public bool ConsiousStepping(HexSprite h)
+        public bool ConsiousMultiStep(HexSprite h)
         {
             return false;
             // TODO: write Stepping process
         }
         public bool ConsiousWalking(HexSprite h)
         {
-            return false;
-            // TODO: write walking process
+            (int, List<HexUnit>, HexSprite) p = accessibleArea[h];
+            HexSprite t = h;
+            if(!(p.Item3 is null))
+            {
+                t = p.Item3;
+
+                // TODO: trap process
+
+                // GameObject origin = (GameObject)Resources.Load("Trap/" + this.ani.map.Hex2Trap[t]);
+                // GameObject prehubTrap = Instantiate(origin, t.positonWorldTrap(), Quaternion.identity);
+                // // デフォルトでfalseにしておく ( プレハブ編集画面の目玉マーク )
+                // this.prehubTrap.SetActive(false);
+                // this.community.pos.SetGridAsParent(prehubTrap);
+                // this.ani.trapPrepared = prehubTrap;
+            }
+            this.ani.ParamaterControllInit(status.MOV, false);
+            this.ani.StopAllCoroutines();
+            this.ani.BeginWalk();
+            this.ani.targetList = accessibleArea[t].Item2;
+
+            return true;
         }
+
         public bool ConsiousTeleport(HexSprite h)
         {
             return false;

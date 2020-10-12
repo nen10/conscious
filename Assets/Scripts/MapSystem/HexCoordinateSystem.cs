@@ -44,9 +44,9 @@ namespace MapSystem.HexCoordinateSystem
         {
             return new Hex((v.x + v.y / 2) / 2, 0, v.y / 2, isGlobal);
         }
-        public static Hex UnityYXZHex2Z3Hex(Vector3Int v)
+        public static Hex UnityYXZHex2Z3Hex(Vector3Int v, bool isGlobal = true)
         {
-            return sqYXZHex2Z3Hex(UnityYXZHex2sqYXZHex(v), true);
+            return sqYXZHex2Z3Hex(UnityYXZHex2sqYXZHex(v), isGlobal);
         }
     }
     public class Hex

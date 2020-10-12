@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 using static UnityEngine.Mathf;
 using MapSystem.HexCoordinateSystem;
 using gen = MapSystem.HexCoordinateSystem.HexGenerator;
+using mh = MapSystem.HexCoordinateSystem.MathHex;
 using MapSystem.ResourceManager;
 using CharacterSystem;
 using UnityEditor;
@@ -26,9 +27,18 @@ namespace MapSystem.SpriteManager
         public Tiling til;
 
         public Dictionary<HexSprite, int> Hex2MoveCost;
+        public Dictionary<HexSprite, int> Hex2Trap;
         public static readonly int MOVECOST_EMPTY = 1;
         public static readonly int MOVECOST_EXIST_CHARACTER = 2;
         public static readonly int MOVECOST_BLOCKED = 65535;
+        public readonly Vector3 A;
+        public readonly Vector3 B;
+        public readonly Vector3 C;
+        public readonly Vector3 BC;
+        public readonly Vector3 CA;
+        public readonly Vector3 AB;
+
+        public readonly Dictionary<gen.unit, Vector3> unit2World;
         public MapData(Grid floor, Tilemap ground, Tilemap onGround, Tilemap blaind, Tiling til)
         {
             this.oneFloor = floor;
@@ -37,6 +47,29 @@ namespace MapSystem.SpriteManager
             this.layerBlaind = blaind;
             this.til = til;
             this.Hex2MoveCost = new Dictionary<HexSprite, int>() { };
+            this.Hex2Trap = new Dictionary<HexSprite, int>() { };
+
+            this.A = HexUnit2World(gen.A);
+            this.B = HexUnit2World(gen.B);
+            this.C = HexUnit2World(gen.C);
+            this.BC = HexUnit2World(gen.BC);
+            this.CA = HexUnit2World(gen.CA);
+            this.AB = HexUnit2World(gen.AB);
+
+            this.unit2World
+            = new Dictionary<gen.unit, Vector3>()
+            { 
+                {gen.unit.a, A},
+                {gen.unit.ab, AB},
+                {gen.unit.b, B},
+                {gen.unit.bc, BC},
+                {gen.unit.c, C},
+                {gen.unit.ca, CA},
+            };
+        }
+        public Vector3 HexUnit2World(HexUnit u)
+        {
+            return oneFloor.CellToWorld(mh.sqYXZHex2UnityYXZHex(mh.Z3Hex2sqYXZHex(u)));
         }
 
         public static string GetTileName(TileBase t)
@@ -56,6 +89,11 @@ namespace MapSystem.SpriteManager
         {
             return ! isNull(layerGround, h);
         }
+        public bool hasOnGround(HexSprite h)
+        {
+            // trap, wall or something.
+            return ! isNull(layerOnGround, h);
+        }
         public string GetGroundTileName(HexSprite h)
         {
             return GetTileName(layerGround, h);
@@ -70,14 +108,14 @@ namespace MapSystem.SpriteManager
         {
             return Hex2MoveCost[h] + (CharacterManager.Hex2Char.ContainsKey(h) ? MOVECOST_EXIST_CHARACTER : 0);
         }
-        public Dictionary<HexSprite, (int, List<HexUnit>)> GetMinPath(
+        public Dictionary<HexSprite, (int, List<HexUnit>, HexSprite)> GetMinPath(
             HexSprite s,
             HexSprite e,
             int moveRange
             )
         {
-            Dictionary<HexSprite, (int, List<HexUnit>)> minCostPath = new Dictionary<HexSprite, (int, List<HexUnit>)>() { };
-            minCostPath[s] = (0, new List<HexUnit>() { });
+            Dictionary<HexSprite, (int, List<HexUnit>, HexSprite)> minCostPath = new Dictionary<HexSprite, (int, List<HexUnit>, HexSprite)>() { };
+            minCostPath[s] = (0, new List<HexUnit>() { }, null);
             DeeperSightRecurcive(
                 e, moveRange, minCostPath,
                 DeeperSight(s, e, moveRange, minCostPath)
@@ -85,13 +123,13 @@ namespace MapSystem.SpriteManager
             return minCostPath;
         }
 
-        public Dictionary<HexSprite, (int, List<HexUnit>)> GetMinPaths(
+        public Dictionary<HexSprite, (int, List<HexUnit>, HexSprite)> GetMinPaths(
             HexSprite s,
             int moveRange
             )
         {
-            Dictionary<HexSprite, (int, List<HexUnit>)> minCostPath = new Dictionary<HexSprite, (int, List<HexUnit>)>() { };
-            minCostPath[s] = (0, new List<HexUnit>() {});
+            Dictionary<HexSprite, (int, List<HexUnit>, HexSprite)> minCostPath = new Dictionary<HexSprite, (int, List<HexUnit>, HexSprite)>() { };
+            minCostPath[s] = (0, new List<HexUnit>() {}, null);
             FlatSightRecurcive(
                 s, moveRange, minCostPath, 
                 FlatSight(s, s, moveRange, minCostPath)
@@ -101,7 +139,7 @@ namespace MapSystem.SpriteManager
         public void DeeperSightRecurcive(
             HexSprite e,
             int moveRange,
-            Dictionary<HexSprite, (int, List<HexUnit>)> minCostPath,
+            Dictionary<HexSprite, (int, List<HexUnit>, HexSprite)> minCostPath,
             int priority, // Hex.L1Distance(e, s)
             Dictionary<int, List<HexSprite>> lookDeeper
             )
@@ -129,7 +167,7 @@ namespace MapSystem.SpriteManager
         public void DeeperSightRecurcive(
             HexSprite e,
             int moveRange,
-            Dictionary<HexSprite, (int, List<HexUnit>)> minCostPath,
+            Dictionary<HexSprite, (int, List<HexUnit>, HexSprite)> minCostPath,
             Dictionary<int, List<HexSprite>> lookDeeper
             )
         {
@@ -151,7 +189,7 @@ namespace MapSystem.SpriteManager
         public void FlatSightRecurcive(
             HexSprite s,
             int moveRange,
-            Dictionary<HexSprite, (int, List<HexUnit>)> minCostPath,
+            Dictionary<HexSprite, (int, List<HexUnit>, HexSprite)> minCostPath,
             Dictionary<int, List<HexSprite>> lookFlat
             )
         {
@@ -174,7 +212,7 @@ namespace MapSystem.SpriteManager
             HexSprite s,
             HexSprite e,
             int moveRange,
-            Dictionary<HexSprite, (int, List<HexUnit>)> minCostPath
+            Dictionary<HexSprite, (int, List<HexUnit>, HexSprite)> minCostPath
             )
         {
             Dictionary<int, List<HexSprite>> lookDeeper = new Dictionary<int, List<HexSprite>>() { };
@@ -184,6 +222,7 @@ namespace MapSystem.SpriteManager
                 // マップ情報による判断
                 int c = minCostPath[s].Item1 + GetMoveCost(h);
                 int d = Hex.L1Distance(e, h);
+                HexSprite trapHex = minCostPath[s].Item3;
 
                 // 現在地点 h に至る既知のpathの move cost が
                 // 現在のmove cost以下なら、すでにその地点の周りは探索しはじめている
@@ -191,7 +230,8 @@ namespace MapSystem.SpriteManager
                 if(moveRange < c) continue; //深掘りしない
                 List<HexUnit> np = new List<HexUnit>(minCostPath[s].Item2);
                 np.Add(u);
-                minCostPath[h] = (c, np);
+                this.Hex2Trap = new Dictionary<HexSprite, int>() { };
+                minCostPath[h] = (c, np, (trapHex is null) && this.Hex2Trap.ContainsKey(h) ? h : trapHex);
                 if(moveRange < d + c) continue; //深掘りしない
                 if(!lookDeeper.ContainsKey(c)) lookDeeper[c] = new List<HexSprite>() { };
                 lookDeeper[c].Add(h);
@@ -202,7 +242,7 @@ namespace MapSystem.SpriteManager
             HexSprite s,
             HexSprite e,
             int moveRange,
-            Dictionary<HexSprite, (int, List<HexUnit>)> minCostPath
+            Dictionary<HexSprite, (int, List<HexUnit>, HexSprite)> minCostPath
             )
         {
             Dictionary<int, List<HexSprite>> lookFlat = new Dictionary<int, List<HexSprite>>() { };
@@ -212,6 +252,7 @@ namespace MapSystem.SpriteManager
                 // マップ情報による判断
                 int c = minCostPath[e].Item1 + GetMoveCost(h);
                 int d = Hex.L1Distance(h, s);
+                HexSprite trapHex = minCostPath[s].Item3;
 
                 // 現在地点 h に至る既知のpathの move cost が
                 // 現在のmove cost以下なら、すでにその地点の周りは探索しはじめている
@@ -219,11 +260,20 @@ namespace MapSystem.SpriteManager
                 if(moveRange < c ) continue;
                 List<HexUnit> np = new List<HexUnit>(minCostPath[e].Item2);
                 np.Add(u);
-                minCostPath[h] = (c, np);
+                minCostPath[h] = (c, np, (trapHex is null) && this.Hex2Trap.ContainsKey(h) ? h : trapHex);
                 if(!lookFlat.ContainsKey(c)) lookFlat[c] = new List<HexSprite>() { };
                 lookFlat[c].Add(h);
             }
             return lookFlat;
+        }
+
+        public Hex WorldToHex(Vector3 w, bool isGlobal = false)
+        {
+            return MathHex.UnityYXZHex2Z3Hex(this.oneFloor.WorldToCell(w), isGlobal);
+        }
+        public HexSprite WorldToHexSprite(Vector3 w, bool isGlobal = true)
+        {
+            return new HexSprite(this, MathHex.UnityYXZHex2Z3Hex(this.oneFloor.WorldToCell(w), isGlobal));
         }
     }
 
@@ -243,9 +293,14 @@ namespace MapSystem.SpriteManager
         {
             this.map = h.isGlobal ? map : null;
         }
+        public HexSprite(MapData map, Vector3 w, Hex h)
+         : base(h.a, 0, h.c, h.isGlobal)
+        {
+            this.map = h.isGlobal ? map : null;
+        }
         public Vector3Int unityYXZHex
         {
-            get { return HexCoordinateSystem.MathHex.Z3Hex2UnityYXZHex(this); }
+            get { return mh.Z3Hex2UnityYXZHex(this); }
         }
         public Vector3 unityXYZ
         {
@@ -317,12 +372,12 @@ namespace MapSystem.SpriteManager
         {
             return (HexSprite)MemberwiseClone();
         }
-        public Dictionary<HexSprite, (int, List<HexUnit>)> GetMinPath(HexSprite e, int moveRange)
+        public Dictionary<HexSprite, (int, List<HexUnit>, HexSprite)> GetMinPath(HexSprite e, int moveRange)
         {
             return map.GetMinPath(this, e, moveRange);
         }
 
-        public Dictionary<HexSprite, (int, List<HexUnit>)> GetMinPaths(int moveRange)
+        public Dictionary<HexSprite, (int, List<HexUnit>, HexSprite)> GetMinPaths(int moveRange)
         {
 
             return map.GetMinPaths(this,moveRange);

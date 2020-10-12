@@ -509,9 +509,9 @@ namespace CharacterSystem.StatusParameter
         public StatusEquip equip;
         public ParamSkillLevels skillLVsSocial;
         public INT INT;
-        public HP HP;
-        public MOV MOV;
-        public CP CP;
+        public ParamVariable HP;
+        public ParamVariable MOV;
+        public ParamVariable CP;
         public DEX DEX;
         public StatusCharacter(
             string classname,
