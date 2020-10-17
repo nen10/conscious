@@ -39,14 +39,14 @@ public class TimeManager : MonoBehaviour
         observer.GenerateTileInit();
         observer.generatedCenter.Clone();
         CharacterManager.Init(observer.generatedCenter.Clone());
-        new Character(CharacterManager.playable, "Moth", "C");
+        new Character(CharacterManager.playable, "", "Moth", "C");
 
-        Character ch1 = new Character(new Hex( 4, 2, 0), "Slime", "C");
-        Character ch2 = new Character(new Hex( 0,-3, 0), "EyeBall", "B");
-        Character ch3 = new Character(new Hex(-2, 3, 0), "Moth", "D");
-        Character ch4 = new Character(new Hex( 0,-2, 2), "Potion", "J");
-        Character ch5 = new Character(new Hex(-2, 0, 3), "WaterSmall", "A");
-        Character ch6 = new Character(new Hex( 2, 4, 0), "Bug", "C");
+        Character ch1 = new Character(new Hex( 4, 2, 0), "", "Slime", "C");
+        Character ch2 = new Character(new Hex( 0,-3, 0), "", "EyeBall", "B");
+        Character ch3 = new Character(new Hex(-2, 3, 0), "", "Moth", "D");
+        Character ch4 = new Character(new Hex( 0,-2, 2), "", "Potion", "J");
+        Character ch5 = new Character(new Hex(-2, 0, 3), "", "WaterSmall", "A");
+        Character ch6 = new Character(new Hex( 2, 4, 0), "", "Bug", "C");
 
         CharacterManager.playable.members[CharacterManager.playable.pReaderId].ani.Inverse();
         CharacterManager.playable.members[CharacterManager.playable.pReaderId].SetPointer("Circle_3");
@@ -57,6 +57,7 @@ public class TimeManager : MonoBehaviour
         ch5.SetPointer("Circle_39");
         ch6.SetPointer("Circle_38");
         // CharacterManager.playable.members[CharacterManager.playable.pReaderId].RemovePointer();
+        // 移動させてみよう
 
     }
 

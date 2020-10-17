@@ -1,6 +1,8 @@
 # conscious
 
 Under constructing!!!!!!!!
+コードがめっちゃ汚くなってきたので更新中断します！
+再開時にはUnityを効果的に使えるようなデザイン設計して作ります！
 
 ## About
 
